@@ -3,28 +3,28 @@
 			<ProjectGuid>{F3D9C401-6639-409A-9E53-F03CBB2D2479}</ProjectGuid>
 		</PropertyGroup>
 		<ItemGroup>
-			<Projects Include="hello_srv.dproj">
+			<Projects Include="guide\hello_srv.dproj">
 				<Dependencies/>
 			</Projects>
-			<Projects Include="hello_cli.dproj">
+			<Projects Include="guide\hello_cli.dproj">
 				<Dependencies/>
 			</Projects>
-			<Projects Include="weather_srv.dproj">
+			<Projects Include="guide\weather_srv.dproj">
 				<Dependencies/>
 			</Projects>
-			<Projects Include="weather_cli.dproj">
+			<Projects Include="guide\weather_cli.dproj">
 				<Dependencies/>
 			</Projects>
-			<Projects Include="task_ventilator.dproj">
+			<Projects Include="guide\task_ventilator.dproj">
 				<Dependencies/>
 			</Projects>
-			<Projects Include="task_worker.dproj">
+			<Projects Include="guide\task_worker.dproj">
 				<Dependencies/>
 			</Projects>
-			<Projects Include="task_sink.dproj">
+			<Projects Include="guide\task_sink.dproj">
 				<Dependencies/>
 			</Projects>
-			<Projects Include="multisocket_reader.dproj">
+			<Projects Include="guide\multisocket_reader.dproj">
 				<Dependencies/>
 			</Projects>
 		</ItemGroup>
@@ -36,76 +36,76 @@
 			</BorlandProject>
 		</ProjectExtensions>
 		<Target Name="hello_srv">
-			<MSBuild Projects="hello_srv.dproj"/>
+			<MSBuild Projects="guide\hello_srv.dproj"/>
 		</Target>
 		<Target Name="hello_srv:Clean">
-			<MSBuild Projects="hello_srv.dproj" Targets="Clean"/>
+			<MSBuild Projects="guide\hello_srv.dproj" Targets="Clean"/>
 		</Target>
 		<Target Name="hello_srv:Make">
-			<MSBuild Projects="hello_srv.dproj" Targets="Make"/>
+			<MSBuild Projects="guide\hello_srv.dproj" Targets="Make"/>
 		</Target>
 		<Target Name="hello_cli">
-			<MSBuild Projects="hello_cli.dproj"/>
+			<MSBuild Projects="guide\hello_cli.dproj"/>
 		</Target>
 		<Target Name="hello_cli:Clean">
-			<MSBuild Projects="hello_cli.dproj" Targets="Clean"/>
+			<MSBuild Projects="guide\hello_cli.dproj" Targets="Clean"/>
 		</Target>
 		<Target Name="hello_cli:Make">
-			<MSBuild Projects="hello_cli.dproj" Targets="Make"/>
+			<MSBuild Projects="guide\hello_cli.dproj" Targets="Make"/>
 		</Target>
 		<Target Name="weather_srv">
-			<MSBuild Projects="weather_srv.dproj"/>
+			<MSBuild Projects="guide\weather_srv.dproj"/>
 		</Target>
 		<Target Name="weather_srv:Clean">
-			<MSBuild Projects="weather_srv.dproj" Targets="Clean"/>
+			<MSBuild Projects="guide\weather_srv.dproj" Targets="Clean"/>
 		</Target>
 		<Target Name="weather_srv:Make">
-			<MSBuild Projects="weather_srv.dproj" Targets="Make"/>
+			<MSBuild Projects="guide\weather_srv.dproj" Targets="Make"/>
 		</Target>
 		<Target Name="weather_cli">
-			<MSBuild Projects="weather_cli.dproj"/>
+			<MSBuild Projects="guide\weather_cli.dproj"/>
 		</Target>
 		<Target Name="weather_cli:Clean">
-			<MSBuild Projects="weather_cli.dproj" Targets="Clean"/>
+			<MSBuild Projects="guide\weather_cli.dproj" Targets="Clean"/>
 		</Target>
 		<Target Name="weather_cli:Make">
-			<MSBuild Projects="weather_cli.dproj" Targets="Make"/>
+			<MSBuild Projects="guide\weather_cli.dproj" Targets="Make"/>
 		</Target>
 		<Target Name="task_ventilator">
-			<MSBuild Projects="task_ventilator.dproj"/>
+			<MSBuild Projects="guide\task_ventilator.dproj"/>
 		</Target>
 		<Target Name="task_ventilator:Clean">
-			<MSBuild Projects="task_ventilator.dproj" Targets="Clean"/>
+			<MSBuild Projects="guide\task_ventilator.dproj" Targets="Clean"/>
 		</Target>
 		<Target Name="task_ventilator:Make">
-			<MSBuild Projects="task_ventilator.dproj" Targets="Make"/>
+			<MSBuild Projects="guide\task_ventilator.dproj" Targets="Make"/>
 		</Target>
 		<Target Name="task_worker">
-			<MSBuild Projects="task_worker.dproj"/>
+			<MSBuild Projects="guide\task_worker.dproj"/>
 		</Target>
 		<Target Name="task_worker:Clean">
-			<MSBuild Projects="task_worker.dproj" Targets="Clean"/>
+			<MSBuild Projects="guide\task_worker.dproj" Targets="Clean"/>
 		</Target>
 		<Target Name="task_worker:Make">
-			<MSBuild Projects="task_worker.dproj" Targets="Make"/>
+			<MSBuild Projects="guide\task_worker.dproj" Targets="Make"/>
 		</Target>
 		<Target Name="task_sink">
-			<MSBuild Projects="task_sink.dproj"/>
+			<MSBuild Projects="guide\task_sink.dproj"/>
 		</Target>
 		<Target Name="task_sink:Clean">
-			<MSBuild Projects="task_sink.dproj" Targets="Clean"/>
+			<MSBuild Projects="guide\task_sink.dproj" Targets="Clean"/>
 		</Target>
 		<Target Name="task_sink:Make">
-			<MSBuild Projects="task_sink.dproj" Targets="Make"/>
+			<MSBuild Projects="guide\task_sink.dproj" Targets="Make"/>
 		</Target>
 		<Target Name="multisocket_reader">
-			<MSBuild Projects="multisocket_reader.dproj"/>
+			<MSBuild Projects="guide\multisocket_reader.dproj"/>
 		</Target>
 		<Target Name="multisocket_reader:Clean">
-			<MSBuild Projects="multisocket_reader.dproj" Targets="Clean"/>
+			<MSBuild Projects="guide\multisocket_reader.dproj" Targets="Clean"/>
 		</Target>
 		<Target Name="multisocket_reader:Make">
-			<MSBuild Projects="multisocket_reader.dproj" Targets="Make"/>
+			<MSBuild Projects="guide\multisocket_reader.dproj" Targets="Make"/>
 		</Target>
 		<Target Name="Build">
 			<CallTarget Targets="hello_srv;hello_cli;weather_srv;weather_cli;task_ventilator;task_worker;task_sink;multisocket_reader"/>

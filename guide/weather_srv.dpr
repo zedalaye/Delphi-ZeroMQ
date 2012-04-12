@@ -24,7 +24,7 @@ begin
   Randomize;
   repeat
     // Get values that will fool the boss
-    zipcode     := Random(100) + 10000;
+    zipcode     := Random(100000);
     temperature := Random(215) - 80;
     relhumidity := Random(50) + 10;
 

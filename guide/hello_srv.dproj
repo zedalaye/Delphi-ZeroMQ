@@ -1,7 +1,7 @@
 ﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 		<PropertyGroup>
-			<ProjectGuid>{033F92B3-FB68-42F0-A324-90EA30CF199F}</ProjectGuid>
-			<MainSource>hello_cli.dpr</MainSource>
+			<ProjectGuid>{AC4307DB-77B6-4AF3-8CCF-E3D02B94B016}</ProjectGuid>
+			<MainSource>hello_srv.dpr</MainSource>
 			<Base>True</Base>
 			<Config Condition="'$(Config)'==''">Debug</Config>
 			<TargetedPlatforms>1</TargetedPlatforms>
@@ -35,6 +35,10 @@
 			<Base>true</Base>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base)'!=''">
+			<DCC_ExeOutput>..\bin</DCC_ExeOutput>
+			<DCC_DcuOutput>..\dcu</DCC_DcuOutput>
+			<DCC_UnitSearchPath>..;..\dcu;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+			<Manifest_File>None</Manifest_File>
 			<DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;$(DCC_Namespace)</DCC_Namespace>
 			<DCC_E>false</DCC_E>
 			<VerInfo_Locale>1036</VerInfo_Locale>
@@ -62,9 +66,8 @@
 			<DCC_GenerateStackFrames>true</DCC_GenerateStackFrames>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
-			<DCC_DebugDCUs>true</DCC_DebugDCUs>
-			<Manifest_File>None</Manifest_File>
 			<VerInfo_Locale>1033</VerInfo_Locale>
+			<Manifest_File>None</Manifest_File>
 		</PropertyGroup>
 		<ItemGroup>
 			<DelphiCompile Include="$(MainSource)">
@@ -88,7 +91,7 @@
 			<BorlandProject>
 				<Delphi.Personality>
 					<Source>
-						<Source Name="MainSource">hello_cli.dpr</Source>
+						<Source Name="MainSource">hello_srv.dpr</Source>
 					</Source>
 					<VersionInfo>
 						<VersionInfo Name="IncludeVerInfo">False</VersionInfo>

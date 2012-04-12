@@ -380,33 +380,33 @@ end;
 
 function TZMQPair.ReceiveString(Flags: MessageFlags): string;
 var
-  M: TZmqMsg;
+  msg: TZmqMsg;
   str: UTF8String;
   len: Cardinal;
 begin
-  zmq_msg_init(@M);
-  if zmq_recvmsg(FSocket, @M, Byte(Flags)) = 0 then
+  zmq_msg_init(@msg);
+  if zmq_recvmsg(FSocket, @msg, Byte(Flags)) = 0 then
     Exit('');
 
-  len := zmq_msg_size(@M);
+  len := zmq_msg_size(@msg);
   SetLength(str, len);
-  Move(zmq_msg_data(@M)^, PAnsiChar(str)^, len);
-  zmq_msg_close(@M);
+  Move(zmq_msg_data(@msg)^, PAnsiChar(str)^, len);
+  zmq_msg_close(@msg);
   Result := string(str);
 end;
 
 function TZMQPair.SendString(const Data: string; Flags: MessageFlags): Integer;
 var
-  M: TZmqMsg;
+  msg: TZmqMsg;
   str: UTF8String;
   len: Integer;
 begin
   str := UTF8String(Data);
   len := Length(str);
-  zmq_msg_init_size(@M, len);
-  Move(PAnsiChar(str)^, zmq_msg_data(@M)^, len);
-  Result := zmq_sendmsg(FSocket, @M, Byte(Flags));
-  zmq_msg_close(@M);
+  zmq_msg_init_size(@msg, len);
+  Move(PAnsiChar(str)^, zmq_msg_data(@msg)^, len);
+  Result := zmq_sendmsg(FSocket, @msg, Byte(Flags));
+  zmq_msg_close(@msg);
 end;
 
 end.

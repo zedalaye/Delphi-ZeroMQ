@@ -12,32 +12,33 @@ var
   Z: IZeroMQ;
   Receiver, Subscriber: IZMQPair;
   RC: Integer;
-  task: string;
-  update: TZmqMsg;
+  task, update: TZmqMsg;
 begin
   Z := TZeroMQ.Create;
   Receiver := Z.Start(ZMQ.Pull);
-  RC := Receiver.Connect('tcp://localhost:5557');
+  Receiver.Connect('tcp://localhost:5557');
 
   Subscriber := Z.Start(ZMQ.Subscriber);
-  RC := Subscriber.Connect('tcp://localhost:5556');
-  RC := Subscriber.Subscribe('10001 ');
+  Subscriber.Connect('tcp://localhost:5556');
+  Subscriber.Subscribe('10001 ');
 
   while True do
   begin
-    task := '';
     repeat
-      task := Receiver.ReceiveString([MessageFlag.DontWait]);
-      if task <> '' then
+      Z.InitMessage(task);
+      RC := Receiver.ReceiveMessage(task, [MessageFlag.DontWait]);
+      if RC = 0 then
       begin
         WriteLn('Process Task...');
         Sleep(10);
-      end;
-    until task = '';
+      end
+      else if RC = -1 then
+        WriteLn('Error code : ', zmq_errno);
+      Z.CloseMessage(task);
+    until RC <> 0;
 
-    RC := 0;
     repeat
-      RC := Z.InitMessage(update);
+      Z.InitMessage(update);
       RC := Subscriber.ReceiveMessage(update, [MessageFlag.DontWait]);
       if RC = 0 then
       begin
