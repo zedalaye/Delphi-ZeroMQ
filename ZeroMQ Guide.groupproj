@@ -27,6 +27,9 @@
 			<Projects Include="guide\multisocket_reader.dproj">
 				<Dependencies/>
 			</Projects>
+			<Projects Include="guide\multisocket_poller.dproj">
+				<Dependencies/>
+			</Projects>
 		</ItemGroup>
 		<ProjectExtensions>
 			<Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -107,14 +110,23 @@
 		<Target Name="multisocket_reader:Make">
 			<MSBuild Projects="guide\multisocket_reader.dproj" Targets="Make"/>
 		</Target>
+		<Target Name="multisocket_poller">
+			<MSBuild Projects="guide\multisocket_poller.dproj"/>
+		</Target>
+		<Target Name="multisocket_poller:Clean">
+			<MSBuild Projects="guide\multisocket_poller.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="multisocket_poller:Make">
+			<MSBuild Projects="guide\multisocket_poller.dproj" Targets="Make"/>
+		</Target>
 		<Target Name="Build">
-			<CallTarget Targets="hello_srv;hello_cli;weather_srv;weather_cli;task_ventilator;task_worker;task_sink;multisocket_reader"/>
+			<CallTarget Targets="hello_srv;hello_cli;weather_srv;weather_cli;task_ventilator;task_worker;task_sink;multisocket_reader;multisocket_poller"/>
 		</Target>
 		<Target Name="Clean">
-			<CallTarget Targets="hello_srv:Clean;hello_cli:Clean;weather_srv:Clean;weather_cli:Clean;task_ventilator:Clean;task_worker:Clean;task_sink:Clean;multisocket_reader:Clean"/>
+			<CallTarget Targets="hello_srv:Clean;hello_cli:Clean;weather_srv:Clean;weather_cli:Clean;task_ventilator:Clean;task_worker:Clean;task_sink:Clean;multisocket_reader:Clean;multisocket_poller:Clean"/>
 		</Target>
 		<Target Name="Make">
-			<CallTarget Targets="hello_srv:Make;hello_cli:Make;weather_srv:Make;weather_cli:Make;task_ventilator:Make;task_worker:Make;task_sink:Make;multisocket_reader:Make"/>
+			<CallTarget Targets="hello_srv:Make;hello_cli:Make;weather_srv:Make;weather_cli:Make;task_ventilator:Make;task_worker:Make;task_sink:Make;multisocket_reader:Make;multisocket_poller:Make"/>
 		</Target>
 		<Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 	</Project>
