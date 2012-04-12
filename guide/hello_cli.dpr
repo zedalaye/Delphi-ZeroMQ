@@ -7,35 +7,38 @@ program hello_cli;
 uses
   System.SysUtils, zeromq;
 
-
-procedure doit;
+procedure Run;
 var
   Z: IZeroMQ;
   R: IZMQPair;
   request_nbr: Integer;
   S: string;
 begin
-  try
-    Z := TZeroMQ.Create(1);
-    R := Z.Start(ZMQ.Requester);
-    Writeln('Connecting to hello world server...');
-    R.Connect('tcp://localhost:5555');
+  Z := TZeroMQ.Create;
+  R := Z.Start(ZMQ.Requester);
 
-    request_nbr := 0;
-    while request_nbr < 10 do
-    begin
-      Inc(request_nbr);
-      WriteLn('Sending Hello');
-      R.SendString('Hello');
-      S := R.ReceiveString;
-      WriteLn(' Received ', S);
-    end;
-  except
-    on E: Exception do
-      Writeln(E.ClassName, ': ', E.Message);
+  Writeln('Connecting to hello world server...');
+  R.Connect('tcp://localhost:5555');
+
+  request_nbr := 0;
+  while request_nbr < 10 do
+  begin
+    Inc(request_nbr);
+    WriteLn('Sending Hello');
+    R.SendString('Hello');
+    S := R.ReceiveString;
+    WriteLn(' Received ', S);
   end;
 end;
 
 begin
-  doit;
+  try
+    Run;
+    WriteLn;
+    WriteLn('Press a key to continue...');
+    ReadLn;
+  except
+    on E: Exception do
+      Writeln(E.ClassName, ': ', E.Message);
+  end;
 end.

@@ -116,5 +116,5 @@
 		<Target Name="Make">
 			<CallTarget Targets="hello_srv:Make;hello_cli:Make;weather_srv:Make;weather_cli:Make;task_ventilator:Make;task_worker:Make;task_sink:Make;multisocket_reader:Make"/>
 		</Target>
-		<Import Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')" Project="$(BDS)\Bin\CodeGear.Group.Targets"/>
+		<Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 	</Project>

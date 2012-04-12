@@ -14,15 +14,15 @@ var
   Sink: IZMQPair;
   I, C, L: Integer;
 begin
-  Writeln('Starting task ventilator (5557)...');
-  Z := TZeroMQ.Create(1);
+  Z := TZeroMQ.Create;
   Sender := Z.Start(ZMQ.Push);
   Sender.Bind('tcp://*:5557');
+  Writeln('Started task ventilator (TCP/5557)...');
 
   Sink := Z.Start(ZMQ.Push);
   Sink.Connect('tcp://localhost:5558');
 
-  Writeln('Press Enter when the workers are ready:');
+  Writeln('Press Enter when the workers are ready.');
   Readln;
 
   WriteLn('Sending tasks to workers...');
@@ -44,7 +44,9 @@ begin
   try
     Randomize;
     Run;
-    Readln;
+    WriteLn;
+    WriteLn('Press a key to continue...');
+    ReadLn;
   except
     on E: Exception do
       Writeln(E.ClassName, ': ', E.Message);

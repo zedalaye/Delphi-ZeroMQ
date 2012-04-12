@@ -1,3 +1,5 @@
 
 *.dsk
 *.~dsk
+*.local
+/guide/__history

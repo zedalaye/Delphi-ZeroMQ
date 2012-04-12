@@ -15,9 +15,10 @@ var
   C: Integer;
   S: string;
 begin
-  Z := TZeroMQ.Create(1);
+  Z := TZeroMQ.Create;
   Receiver := Z.Start(ZMQ.Pull);
   Receiver.Bind('tcp://*:5558');
+  Writeln('Started task sink (TCP/5558)...');
 
   WriteLn('Waiting for ventilator for start signal...');
   Receiver.ReceiveString;
@@ -39,7 +40,9 @@ end;
 begin
   try
     Run;
-    Readln;
+    WriteLn;
+    WriteLn('Press a key to continue...');
+    ReadLn;
   except
     on E: Exception do
       Writeln(E.ClassName, ': ', E.Message);

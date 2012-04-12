@@ -42,7 +42,7 @@ var
   update: string;
   zipcode, temperature, relhumidity: Integer;
 begin
-  Z := TZeroMQ.Create(1);
+  Z := TZeroMQ.Create;
   S := Z.Start(ZMQ.Subscriber);
 
   // Socket to talk to server
@@ -73,6 +73,8 @@ end;
 begin
   try
     Run;
+    WriteLn;
+    WriteLn('Press a key to continue...');
     ReadLn;
   except
     on E: Exception do

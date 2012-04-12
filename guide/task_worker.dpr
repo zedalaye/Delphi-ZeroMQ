@@ -14,7 +14,7 @@ var
   Sender: IZMQPair;
   S: string;
 begin
-  Z := TZeroMQ.Create(1);
+  Z := TZeroMQ.Create;
   Receiver := Z.Start(ZMQ.Pull);
   Receiver.Connect('tcp://localhost:5557');
 
