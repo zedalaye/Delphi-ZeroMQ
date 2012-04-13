@@ -5,7 +5,7 @@ program multisocket_poller;
 {$R *.res}
 
 uses
-  System.SysUtils, zeromq;
+  System.SysUtils, ZeroMQ.Wrapper;
 
 procedure Run;
 var
@@ -45,7 +45,9 @@ begin
     end
   );
 
-  Poll.PollForever;
+  while True do
+    if Poll.PollOnce > 0 then
+      Poll.FireEvents;
 end;
 
 begin

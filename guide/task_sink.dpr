@@ -5,7 +5,7 @@ program task_sink;
 {$R *.res}
 
 uses
-  Winapi.Windows, System.SysUtils, zeromq;
+  Winapi.Windows, System.SysUtils, ZeroMQ.Wrapper;
 
 procedure Run;
 var

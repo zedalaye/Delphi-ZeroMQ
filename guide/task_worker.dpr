@@ -5,7 +5,7 @@ program task_worker;
 {$R *.res}
 
 uses
-  System.SysUtils, zeromq;
+  System.SysUtils, ZeroMQ.Wrapper;
 
 procedure Run;
 var

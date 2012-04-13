@@ -5,7 +5,7 @@ program hello_cli;
 {$R *.res}
 
 uses
-  System.SysUtils, zeromq;
+  System.SysUtils, ZeroMQ.Wrapper;
 
 procedure Run;
 var

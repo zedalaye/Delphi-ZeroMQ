@@ -4,3 +4,5 @@
 *.local
 /guide/__history
 /__history
+/demo/__history
+*.tvsconfig

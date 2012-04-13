@@ -6,6 +6,9 @@
 			<Projects Include="guide\hello_srv.dproj">
 				<Dependencies/>
 			</Projects>
+			<Projects Include="guide\hello_srv_with_ctrl_c.dproj">
+				<Dependencies/>
+			</Projects>
 			<Projects Include="guide\hello_cli.dproj">
 				<Dependencies/>
 			</Projects>
@@ -30,6 +33,9 @@
 			<Projects Include="guide\multisocket_poller.dproj">
 				<Dependencies/>
 			</Projects>
+			<Projects Include="demo\demo_srv.dproj">
+				<Dependencies/>
+			</Projects>
 		</ItemGroup>
 		<ProjectExtensions>
 			<Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -46,6 +52,15 @@
 		</Target>
 		<Target Name="hello_srv:Make">
 			<MSBuild Projects="guide\hello_srv.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="hello_srv_with_ctrl_c">
+			<MSBuild Projects="guide\hello_srv_with_ctrl_c.dproj"/>
+		</Target>
+		<Target Name="hello_srv_with_ctrl_c:Clean">
+			<MSBuild Projects="guide\hello_srv_with_ctrl_c.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="hello_srv_with_ctrl_c:Make">
+			<MSBuild Projects="guide\hello_srv_with_ctrl_c.dproj" Targets="Make"/>
 		</Target>
 		<Target Name="hello_cli">
 			<MSBuild Projects="guide\hello_cli.dproj"/>
@@ -119,14 +134,23 @@
 		<Target Name="multisocket_poller:Make">
 			<MSBuild Projects="guide\multisocket_poller.dproj" Targets="Make"/>
 		</Target>
+		<Target Name="demo_srv">
+			<MSBuild Projects="demo\demo_srv.dproj"/>
+		</Target>
+		<Target Name="demo_srv:Clean">
+			<MSBuild Projects="demo\demo_srv.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="demo_srv:Make">
+			<MSBuild Projects="demo\demo_srv.dproj" Targets="Make"/>
+		</Target>
 		<Target Name="Build">
-			<CallTarget Targets="hello_srv;hello_cli;weather_srv;weather_cli;task_ventilator;task_worker;task_sink;multisocket_reader;multisocket_poller"/>
+			<CallTarget Targets="hello_srv;hello_srv_with_ctrl_c;hello_cli;weather_srv;weather_cli;task_ventilator;task_worker;task_sink;multisocket_reader;multisocket_poller;demo_srv"/>
 		</Target>
 		<Target Name="Clean">
-			<CallTarget Targets="hello_srv:Clean;hello_cli:Clean;weather_srv:Clean;weather_cli:Clean;task_ventilator:Clean;task_worker:Clean;task_sink:Clean;multisocket_reader:Clean;multisocket_poller:Clean"/>
+			<CallTarget Targets="hello_srv:Clean;hello_srv_with_ctrl_c:Clean;hello_cli:Clean;weather_srv:Clean;weather_cli:Clean;task_ventilator:Clean;task_worker:Clean;task_sink:Clean;multisocket_reader:Clean;multisocket_poller:Clean;demo_srv:Clean"/>
 		</Target>
 		<Target Name="Make">
-			<CallTarget Targets="hello_srv:Make;hello_cli:Make;weather_srv:Make;weather_cli:Make;task_ventilator:Make;task_worker:Make;task_sink:Make;multisocket_reader:Make;multisocket_poller:Make"/>
+			<CallTarget Targets="hello_srv:Make;hello_srv_with_ctrl_c:Make;hello_cli:Make;weather_srv:Make;weather_cli:Make;task_ventilator:Make;task_worker:Make;task_sink:Make;multisocket_reader:Make;multisocket_poller:Make;demo_srv:Make"/>
 		</Target>
-		<Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+		<Import Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')" Project="$(BDS)\Bin\CodeGear.Group.Targets"/>
 	</Project>

@@ -5,7 +5,7 @@ program multisocket_reader;
 {$R *.res}
 
 uses
-  System.SysUtils, zeromq;
+  System.SysUtils, ZeroMQ.API, ZeroMQ.Wrapper;
 
 procedure Run;
 var

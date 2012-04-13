@@ -22,7 +22,7 @@
        Pierr Yager <pierre.y@gmail.com>
 *)
 
-unit zeromq;
+unit ZeroMQ.API;
 
 interface
 
@@ -287,7 +287,6 @@ type
     procedure RegisterPair(const Pair: IZMQPair; Events: PollEvents = []; const Proc: TZMQPollEvent = nil);
     function PollOnce(Timeout: Integer = -1): Integer;
     procedure FireEvents;
-    procedure PollForever(Timeout: Integer = -1);
   end;
 
   IZeroMQ = interface
@@ -335,7 +334,6 @@ type
     procedure RegisterPair(const Pair: IZMQPair; Events: PollEvents = []; const Event: TZMQPollEvent = nil);
     function PollOnce(Timeout: Integer = -1): Integer;
     procedure FireEvents;
-    procedure PollForever(Timeout: Integer = -1);
   end;
 
 { TZeroMQ }
@@ -453,13 +451,6 @@ begin
   for I := 0 to Length(FPollItems) - 1 do
     if (FPollEvents[I] <> nil) and ((FPollItems[I].revents and FPollItems[I].events) <> 0) then
       FPollEvents[I](PollEvents(Byte(FPollItems[I].revents)));
-end;
-
-procedure TZMQPoll.PollForever(Timeout: Integer);
-begin
-  while True do
-    if PollOnce(Timeout) > 0 then
-      FireEvents;
 end;
 
 function TZMQPoll.PollOnce(Timeout: Integer): Integer;
