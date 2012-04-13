@@ -119,7 +119,9 @@ function zmq_term (context: Pointer): Integer; cdecl; external LIBZEROMQ;
 
 type
   PZmqMsg = ^TZmqMsg;
-  TZmqMsg = array[0..31] of Byte;
+  TZmqMsg = record
+    _: array[0..31] of Byte;
+  end;
 
   TZmqFreeFunction = procedure(data, hint: Pointer); stdcall;
 
