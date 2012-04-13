@@ -1,9 +1,9 @@
 ﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 		<PropertyGroup>
-			<ProjectGuid>{23D1C41F-A10A-419B-AE10-421339FBF3D3}</ProjectGuid>
+			<ProjectGuid>{1C8EEB74-03C3-4E7C-8AFF-C7483A5DA21B}</ProjectGuid>
 			<ProjectVersion>13.4</ProjectVersion>
 			<FrameworkType>None</FrameworkType>
-			<MainSource>demo_srv.dpr</MainSource>
+			<MainSource>json_time_cli.dpr</MainSource>
 			<Base>True</Base>
 			<Config Condition="'$(Config)'==''">Debug</Config>
 			<Platform Condition="'$(Platform)'==''">Win32</Platform>
@@ -41,11 +41,11 @@
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base)'!=''">
 			<DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;$(DCC_Namespace)</DCC_Namespace>
-			<DCC_UsePackage>fmx;IndySystem;DBXInterBaseDriver;DataSnapClient;DataSnapCommon;DataSnapServer;DataSnapProviderClient;DbxCommonDriver;dbxcds;Apesuite;DBXOracleDriver;CustomIPTransport;dsnap;fmxase;IndyCore;CloudService;inetdbxpress;IPIndyImpl;bindcompfmx;rtl;dbrtl;DbxClientDriver;bindcomp;inetdb;xmlrtl;ibxpress;IndyProtocols;DBXMySQLDriver;bindengine;soaprtl;DBXInformixDriver;DBXFirebirdDriver;inet;fmxobj;DBXSybaseASADriver;fmxdae;dbexpress;DataSnapIndy10ServerTransport;$(DCC_UsePackage)</DCC_UsePackage>
-			<DCC_UnitSearchPath>..;..\dcu;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
-			<VerInfo_Locale>1036</VerInfo_Locale>
-			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
 			<Manifest_File>None</Manifest_File>
+			<DCC_UnitSearchPath>..;..\dcu;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+			<DCC_UsePackage>fmx;IndySystem;DBXInterBaseDriver;DataSnapClient;DataSnapCommon;DataSnapServer;DataSnapProviderClient;DbxCommonDriver;dbxcds;Apesuite;DBXOracleDriver;CustomIPTransport;dsnap;fmxase;IndyCore;CloudService;inetdbxpress;IPIndyImpl;bindcompfmx;rtl;dbrtl;DbxClientDriver;bindcomp;inetdb;xmlrtl;ibxpress;IndyProtocols;DBXMySQLDriver;bindengine;soaprtl;DBXInformixDriver;DBXFirebirdDriver;inet;fmxobj;DBXSybaseASADriver;fmxdae;dbexpress;DataSnapIndy10ServerTransport;$(DCC_UsePackage)</DCC_UsePackage>
+			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+			<VerInfo_Locale>1036</VerInfo_Locale>
 			<DCC_DcuOutput>..\dcu</DCC_DcuOutput>
 			<DCC_ExeOutput>..\bin</DCC_ExeOutput>
 		</PropertyGroup>
@@ -53,10 +53,10 @@
 			<DCC_UsePackage>vclib;DBXSybaseASEDriver;vclimg;vcldb;vcldsnap;DBXDb2Driver;vclribbon;vcl;UIBD16Win32R;DBXMSSQLDriver;webdsnap;adortl;OverbyteIcsDXe2Run;DBXOdbcDriver;SynEdit_RXE2;vclactnband;bindcompvcl;vclie;vcltouch;websnap;VclSmp;DataSnapConnectors;dsnapcon;vclx;VirtualTreesR;$(DCC_UsePackage)</DCC_UsePackage>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base_Win32)'!=''">
-			<DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
-			<DCC_UsePackage>fsADO16;JvGlobus;JvMM;JvManagedThreads;Tee916;TeeUI916;JvDlgs;JvCrypt;vclib;inetdbbde;frxBDE16;TeePro916;FmxTeeUI916;TeeMaker116;FMITeeLanguage916;JvNet;DBXSybaseASEDriver;fsIBX16;JvDotNetCtrls;vclimg;fmi;JvXPCtrls;vcldb;vcldsnap;GJLComponentsR16;FMXTeeDB916;DBXDb2Driver;Intraweb_120_160;JvCore;frxADO16;vclribbon;frxe16;vcl;FMXTeePro916;UIBD16Win32R;DBXMSSQLDriver;fsTee16;tmsexdxe2;JvRuntimeDesign;FMXTee916;tmsdxe2;JvDB;JvAppFrm;webdsnap;TeeDB916;JclDeveloperTools;JvDocking;adortl;JvWizards;ComboBoxPlusR16;TeeLanguage916;madBasic_;JvHMI;frxDBX16;TeeImage916;JvBands;vcldbx;frx16;VirtualTreesD;OverbyteIcsDXe2Run;FMITee916;TeeWorld916;JvPluginSystem;JclContainers;DBXOdbcDriver;JvCmp;madDisAsm_;JvTimeFramework;svnui;SynEdit_RXE2;JvSystem;JvControls;fsBDE16;intrawebdb_120_160;frxDB16;FMITeeDB916;TeeGL916;fs16;vclactnband;JvJans;JvPrintPreview;PrYComponentsR16;bindcompvcl;JvStdCtrls;frxcs16;Jcl;vclie;JvCustom;FMITeePro916;JvPageComps;madExcept_;tmsxlsdxe2;vcltouch;websnap;VclSmp;fsDB16;TeeTree2D16Tee9;DataSnapConnectors;dsnapcon;GrizzlyBaseR16;JclVcl;JvPascalInterpreter;vclx;FmiTeeUI916;TiersR16;tmswizdxe2;svn;FMXTeeLanguage916;CxLibR16;bdertl;VirtualTreesR;frxIBX16;JvBDE;$(DCC_UsePackage)</DCC_UsePackage>
 			<VerInfo_Locale>1033</VerInfo_Locale>
+			<DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
 			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+			<DCC_UsePackage>fsADO16;JvGlobus;JvMM;JvManagedThreads;Tee916;TeeUI916;JvDlgs;JvCrypt;vclib;inetdbbde;frxBDE16;TeePro916;FmxTeeUI916;TeeMaker116;FMITeeLanguage916;JvNet;DBXSybaseASEDriver;fsIBX16;JvDotNetCtrls;vclimg;fmi;JvXPCtrls;vcldb;vcldsnap;GJLComponentsR16;FMXTeeDB916;DBXDb2Driver;Intraweb_120_160;JvCore;frxADO16;vclribbon;frxe16;vcl;FMXTeePro916;UIBD16Win32R;DBXMSSQLDriver;fsTee16;tmsexdxe2;JvRuntimeDesign;FMXTee916;tmsdxe2;JvDB;JvAppFrm;webdsnap;TeeDB916;JclDeveloperTools;JvDocking;adortl;JvWizards;ComboBoxPlusR16;TeeLanguage916;madBasic_;JvHMI;frxDBX16;TeeImage916;JvBands;vcldbx;frx16;VirtualTreesD;OverbyteIcsDXe2Run;FMITee916;TeeWorld916;JvPluginSystem;JclContainers;DBXOdbcDriver;JvCmp;madDisAsm_;JvTimeFramework;svnui;SynEdit_RXE2;JvSystem;JvControls;fsBDE16;intrawebdb_120_160;frxDB16;FMITeeDB916;TeeGL916;fs16;vclactnband;JvJans;JvPrintPreview;PrYComponentsR16;bindcompvcl;JvStdCtrls;frxcs16;Jcl;vclie;JvCustom;FMITeePro916;JvPageComps;madExcept_;tmsxlsdxe2;vcltouch;websnap;VclSmp;fsDB16;TeeTree2D16Tee9;DataSnapConnectors;dsnapcon;GrizzlyBaseR16;JclVcl;JvPascalInterpreter;vclx;FmiTeeUI916;TiersR16;tmswizdxe2;svn;FMXTeeLanguage916;CxLibR16;bdertl;VirtualTreesR;frxIBX16;JvBDE;$(DCC_UsePackage)</DCC_UsePackage>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_1)'!=''">
 			<DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
@@ -132,7 +132,7 @@
 						<Excluded_Packages Name="$(BDSBIN)\dclofficexp160.bpl">Composants Microsoft Office XP Sample Automation Server Wrapper</Excluded_Packages>
 					</Excluded_Packages>
 					<Source>
-						<Source Name="MainSource">demo_srv.dpr</Source>
+						<Source Name="MainSource">json_time_cli.dpr</Source>
 					</Source>
 				</Delphi.Personality>
 				<Deployment/>
@@ -144,6 +144,6 @@
 			</BorlandProject>
 			<ProjectFileVersion>12</ProjectFileVersion>
 		</ProjectExtensions>
-		<Import Condition="Exists('$(BDS)\Bin\CodeGear.Delphi.Targets')" Project="$(BDS)\Bin\CodeGear.Delphi.Targets"/>
-		<Import Condition="Exists('$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj')" Project="$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj"/>
+		<Import Project="$(BDS)\Bin\CodeGear.Delphi.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Delphi.Targets')"/>
+		<Import Project="$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj" Condition="Exists('$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj')"/>
 	</Project>

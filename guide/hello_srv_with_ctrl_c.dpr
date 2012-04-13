@@ -24,7 +24,7 @@ begin
   Stopped := False;
   while not Stopped do
   begin
-    S := R.ReceiveString([MessageFlag.DontWait]);
+    S := R.ReceiveString(True);
     if S <> '' then
     begin
       WriteLn('Received ', S);

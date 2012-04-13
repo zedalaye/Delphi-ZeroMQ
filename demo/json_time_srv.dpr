@@ -1,4 +1,4 @@
-program demo_srv;
+program json_time_srv;
 
 {$APPTYPE CONSOLE}
 
@@ -15,18 +15,28 @@ var
   Z: IZeroMQ;
   Sender: IZMQPair;
   Json: ISuperObject;
+  S: string;
+  I: Integer;
 begin
   Z := TZeroMQ.Create;
   Sender := Z.Start(ZMQ.Publisher);
   Sender.Bind('tcp://*:5550');
   Writeln('Started time server (TCP/5550)...');
 
-  Json := SO(['time', '']);
+  Json := SO(['date', '', 'time', '', 'garbage', '']);
 
   while not Stopped do
   begin
-    Json.I['time'] := DelphiToJavaDateTime(Now);
-    Sender.SendString(Json.AsString);
+    SetLength(S, 1000000);
+    for I := 1 to 1000000 do
+      S[I] := Char(Random(26) + Ord('A'));
+
+    Json.S['date']    := DateTimeToStr(Now);
+    Json.I['time']    := DelphiToJavaDateTime(Now);
+    Json.S['garbage'] := S;
+
+    S := Json.AsString;
+    Sender.SendStrings(['application/json', S]);
   end;
 end;
 
