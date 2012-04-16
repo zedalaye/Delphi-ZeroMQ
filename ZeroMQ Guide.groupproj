@@ -51,6 +51,12 @@
 			<Projects Include="guide\requestreply_broker.dproj">
 				<Dependencies/>
 			</Projects>
+			<Projects Include="guide\requestreply_broker_device.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="guide\multithreaded_srv.dproj">
+				<Dependencies/>
+			</Projects>
 		</ItemGroup>
 		<ProjectExtensions>
 			<Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -203,14 +209,32 @@
 		<Target Name="requestreply_broker:Make">
 			<MSBuild Projects="guide\requestreply_broker.dproj" Targets="Make"/>
 		</Target>
+		<Target Name="requestreply_broker_device">
+			<MSBuild Projects="guide\requestreply_broker_device.dproj"/>
+		</Target>
+		<Target Name="requestreply_broker_device:Clean">
+			<MSBuild Projects="guide\requestreply_broker_device.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="requestreply_broker_device:Make">
+			<MSBuild Projects="guide\requestreply_broker_device.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="multithreaded_srv">
+			<MSBuild Projects="guide\multithreaded_srv.dproj"/>
+		</Target>
+		<Target Name="multithreaded_srv:Clean">
+			<MSBuild Projects="guide\multithreaded_srv.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="multithreaded_srv:Make">
+			<MSBuild Projects="guide\multithreaded_srv.dproj" Targets="Make"/>
+		</Target>
 		<Target Name="Build">
-			<CallTarget Targets="hello_srv;hello_srv_with_ctrl_c;hello_cli;weather_srv;weather_cli;weather_proxy;task_ventilator;task_worker;task_sink;multisocket_reader;multisocket_poller;json_time_srv;json_time_cli;requestreply_cli;requestreply_srv;requestreply_broker"/>
+			<CallTarget Targets="hello_srv;hello_srv_with_ctrl_c;hello_cli;weather_srv;weather_cli;weather_proxy;task_ventilator;task_worker;task_sink;multisocket_reader;multisocket_poller;json_time_srv;json_time_cli;requestreply_cli;requestreply_srv;requestreply_broker;requestreply_broker_device;multithreaded_srv"/>
 		</Target>
 		<Target Name="Clean">
-			<CallTarget Targets="hello_srv:Clean;hello_srv_with_ctrl_c:Clean;hello_cli:Clean;weather_srv:Clean;weather_cli:Clean;weather_proxy:Clean;task_ventilator:Clean;task_worker:Clean;task_sink:Clean;multisocket_reader:Clean;multisocket_poller:Clean;json_time_srv:Clean;json_time_cli:Clean;requestreply_cli:Clean;requestreply_srv:Clean;requestreply_broker:Clean"/>
+			<CallTarget Targets="hello_srv:Clean;hello_srv_with_ctrl_c:Clean;hello_cli:Clean;weather_srv:Clean;weather_cli:Clean;weather_proxy:Clean;task_ventilator:Clean;task_worker:Clean;task_sink:Clean;multisocket_reader:Clean;multisocket_poller:Clean;json_time_srv:Clean;json_time_cli:Clean;requestreply_cli:Clean;requestreply_srv:Clean;requestreply_broker:Clean;requestreply_broker_device:Clean;multithreaded_srv:Clean"/>
 		</Target>
 		<Target Name="Make">
-			<CallTarget Targets="hello_srv:Make;hello_srv_with_ctrl_c:Make;hello_cli:Make;weather_srv:Make;weather_cli:Make;weather_proxy:Make;task_ventilator:Make;task_worker:Make;task_sink:Make;multisocket_reader:Make;multisocket_poller:Make;json_time_srv:Make;json_time_cli:Make;requestreply_cli:Make;requestreply_srv:Make;requestreply_broker:Make"/>
+			<CallTarget Targets="hello_srv:Make;hello_srv_with_ctrl_c:Make;hello_cli:Make;weather_srv:Make;weather_cli:Make;weather_proxy:Make;task_ventilator:Make;task_worker:Make;task_sink:Make;multisocket_reader:Make;multisocket_poller:Make;json_time_srv:Make;json_time_cli:Make;requestreply_cli:Make;requestreply_srv:Make;requestreply_broker:Make;requestreply_broker_device:Make;multithreaded_srv:Make"/>
 		</Target>
 		<Import Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')" Project="$(BDS)\Bin\CodeGear.Group.Targets"/>
 	</Project>

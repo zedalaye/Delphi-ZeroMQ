@@ -12,6 +12,15 @@ uses
   ZeroMQ.API;
 
 type
+  ZMQ = (
+    Pair,
+    Publisher, Subscriber,
+    Requester, Responder,
+    Dealer, Router,
+    Pull, Push,
+    XPublisher, XSubscriber
+  );
+
   MessageFlag = (DontWait, SendMore);
   MessageFlags = set of MessageFlag;
 
@@ -21,6 +30,8 @@ type
     function Bind(const Address: string): Integer;
     { Client pair }
     function Connect(const Address: string): Integer;
+    { Socket Options }
+    function SocketType: ZMQ;
     { Required for ZMQ.Subscriber pair }
     function Subscribe(const Filter: string): Integer;
     function HaveMore: Boolean;
@@ -49,18 +60,14 @@ type
     procedure FireEvents;
   end;
 
-  ZMQ = (
-    Pair,
-    Publisher, Subscriber,
-    Requester, Responder,
-    Dealer, Router,
-    Pull, Push,
-    XPublisher, XSubscriber
+  ZMQDevice = (
+    Queue, Forwarder, Streamer
   );
 
   IZeroMQ = interface
     ['{593FC079-23AD-451E-8877-11584E93D80E}']
     function Start(Kind: ZMQ): IZMQPair;
+    function StartDevice(Kind: ZMQDevice; Frontend, Backend: IZMQPair): Integer;
     function Poller: IZMQPoll;
     function InitMessage(var Msg: TZmqMsg; Size: Integer = 0): Integer;
     function CloseMessage(var Msg: TZmqMsg): Integer;
@@ -74,6 +81,7 @@ type
     constructor Create(IoThreads: Integer = 1);
     destructor Destroy; override;
     function Start(Kind: ZMQ): IZMQPair;
+    function StartDevice(Kind: ZMQDevice; Frontend, Backend: IZMQPair): Integer;
     function Poller: IZMQPoll;
     function InitMessage(var Msg: TZmqMsg; Size: Integer = 0): Integer;
     function CloseMessage(var Msg: TZmqMsg): Integer;
@@ -95,6 +103,8 @@ type
     { Required for ZMQ.Subscriber pair }
     function Subscribe(const Filter: string): Integer;
     function HaveMore: Boolean;
+    { Socket Options }
+    function SocketType: ZMQ;
     { Raw messages }
     function SendMessage(var Msg: TZmqMsg; Flags: MessageFlags): Integer;
     function ReceiveMessage(var Msg: TZmqMsg; Flags: MessageFlags): Integer;
@@ -139,6 +149,55 @@ function TZeroMQ.Start(Kind: ZMQ): IZMQPair;
 begin
   Result := TZMQPair.Create(zmq_socket(FContext, Ord(Kind)));
   FPairs.Add(Result);
+end;
+
+function TZeroMQ.StartDevice(Kind: ZMQDevice; Frontend,
+  Backend: IZMQPair): Integer;
+{$IFNDEF EXPERIMENTAL}
+const
+  R_OR_D = [ZMQ.Router, ZMQ.Dealer];
+  P_OR_S = [ZMQ.Publisher, ZMQ.Subscriber];
+  P_OR_P = [ZMQ.Push, ZMQ.Pull];
+var
+  P: IZMQPoll;
+  FST, BST: ZMQ;
+{$ENDIF}
+begin
+{$IFDEF EXPERIMENTAL}
+  Result := zmq_device(Ord(Kind) + 1, (Frontend as TZMQPair).FSocket, (Backend as TZMQPair).FSocket);
+{$ELSE}
+  FST := Frontend.SocketType;
+  BST := Backend.SocketType;
+  if   ((Kind = ZMQDevice.Queue)     and (FST <> BST) and (FST in R_OR_D) and (BST in R_OR_D))
+    or ((Kind = ZMQDevice.Forwarder) and (FST <> BST) and (FST in P_OR_S) and (BST in P_OR_S))
+    or ((Kind = ZMQDevice.Streamer)  and (FST <> BST) and (FST in P_OR_P) and (BST in P_OR_P))
+  then
+  begin
+    P := Poller;
+
+    P.RegisterPair(Frontend, [PollEvent.PollIn],
+      procedure(Event: PollEvents)
+      begin
+        if PollEvent.PollIn in Event then
+          Frontend.ForwardMessage(Backend);
+      end
+    );
+
+    P.RegisterPair(Backend, [PollEvent.PollIn],
+      procedure(Event: PollEvents)
+      begin
+        if PollEvent.PollIn in Event then
+          Backend.ForwardMessage(Frontend);
+      end
+    );
+
+    while True do
+      if P.PollOnce > 0 then
+        P.FireEvents;
+  end
+  else
+    Result := -1;
+{$ENDIF}
 end;
 
 function TZeroMQ.InitMessage(var Msg: TZmqMsg; Size: Integer): Integer;
@@ -287,6 +346,17 @@ begin
         Break;
     end;
   end;
+end;
+
+function TZMQPair.SocketType: ZMQ;
+var
+  RawType: Integer;
+  OptionSize: Integer;
+begin
+  RawType := 0;
+  OptionSize := SizeOf(RawType);
+  zmq_getsockopt(FSocket, ZMQ_TYPE, @RawType, @OptionSize);
+  Result := ZMQ(RawType)
 end;
 
 procedure TZMQPair.ForwardMessage(Pair: IZMQPair);
