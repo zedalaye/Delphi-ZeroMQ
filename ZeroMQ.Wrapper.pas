@@ -34,6 +34,8 @@ type
     { Multipart string message }
     function SendStrings(const Data: array of string; DontWait: Boolean = False): Integer;
     function ReceiveStrings(const DontWait: Boolean = False): TArray<string>;
+    { High Level Algorithgms - Forward message to another pair }
+    procedure ForwardMessage(Pair: IZMQPair);
   end;
 
   PollEvent = (PollIn, PollOut, PollErr);
@@ -103,6 +105,8 @@ type
     { Multipart string message }
     function SendStrings(const Data: array of string; DontWait: Boolean = False): Integer;
     function ReceiveStrings(const DontWait: Boolean = False): TArray<string>;
+    { High Level Algorithgms - Forward message to another pair }
+    procedure ForwardMessage(Pair: IZMQPair);
   end;
 
   TZMQPoll = class(TInterfacedObject, IZMQPoll)
@@ -283,6 +287,22 @@ begin
         Break;
     end;
   end;
+end;
+
+procedure TZMQPair.ForwardMessage(Pair: IZMQPair);
+const
+  SEND_FLAGS: array[Boolean] of Byte = (0, ZMQ_SNDMORE);
+var
+  msg: TZmqMsg;
+  flag: Byte;
+begin
+  repeat
+    zmq_msg_init(@msg);
+    zmq_recvmsg(FSocket, @msg, 0);
+    flag := SEND_FLAGS[HaveMore];
+    zmq_sendmsg((Pair as TZMQPair).FSocket, @msg, flag);
+    zmq_msg_close(@msg);
+  until flag = 0;
 end;
 
 { TZMQPoll }
