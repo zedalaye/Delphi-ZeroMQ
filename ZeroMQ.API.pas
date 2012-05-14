@@ -1,5 +1,7 @@
 (*
-    Copyright (c) 2007-2011 iMatix Corporation
+    Copyright (c) 2007-2012 iMatix Corporation
+    Copyright (c) 2009-2011 250bpm s.r.o.
+    Copyright (c) 2011 VMware, Inc.
     Copyright (c) 2007-2011 Other contributors as noted in the AUTHORS file
 
     This file is part of 0MQ.
@@ -42,11 +44,7 @@ const
 (*  Version macros for compile-time API version detection                     *)
   ZMQ_VERSION_MAJOR = 3;
   ZMQ_VERSION_MINOR = 1;
-{$IFNDEF EXPERIMENTAL}
-  ZMQ_VERSION_PATCH = 0;
-{$ELSE}
   ZMQ_VERSION_PATCH = 1;
-{$ENDIF}
 
   ZMQ_VERSION_ =
     ZMQ_VERSION_MAJOR * 10000 +
@@ -93,7 +91,6 @@ const
 (*  Resolves system errors and 0MQ errors to human-readable string.           *)
   function zmq_strerror(errnum: Integer): PAnsiChar; cdecl; external LIBZEROMQ;
 
-{$IFDEF EXPERIMENTAL}
 (******************************************************************************)
 (*  0MQ infrastructure (a.k.a. context) initialisation & termination.         *)
 (******************************************************************************)
@@ -111,7 +108,6 @@ function zmq_ctx_new(): Pointer; cdecl; external LIBZEROMQ;
 function zmq_ctx_destroy(context: Pointer): Integer; cdecl; external LIBZEROMQ;
 function zmq_ctx_set(context: Pointer; option, optval: Integer): Integer; cdecl; external LIBZEROMQ;
 function zmq_ctx_get(context: Pointer; option: Integer): Integer; cdecl; external LIBZEROMQ;
-{$ENDIF}
 
 (*  Old (legacy) API                                                          *)
 function zmq_init(io_threads: Integer): Pointer; cdecl; external LIBZEROMQ;
@@ -121,10 +117,22 @@ function zmq_term (context: Pointer): Integer; cdecl; external LIBZEROMQ;
 (*  0MQ message definition.                                                   *)
 (******************************************************************************)
 
+const
+  ZMQ_MAX_VSM_SIZE = 30;
+
 type
   PZmqMsg = ^TZmqMsg;
   TZmqMsg = record
-    _: array[0..31] of Byte;
+  case Boolean of
+   True: (
+     content: Pointer;
+     flags: Byte;
+     vsm_size: Byte;
+     vsm_data: array[0..ZMQ_MAX_VSM_SIZE - 1] of Byte;
+   );
+   False: (
+     _: array[0..(ZMQ_MAX_VSM_SIZE + 1 + SizeOf(Pointer) + SizeOf(Byte) + SizeOf(Byte))] of Byte;
+   );
   end;
 
   TZmqFreeFunction = procedure(data, hint: Pointer); stdcall;
@@ -132,21 +140,16 @@ type
 function zmq_msg_init(msg: PZmqMsg): Integer; cdecl; external LIBZEROMQ;
 function zmq_msg_init_size(msg: PZmqMsg; size: Cardinal): Integer; cdecl; external LIBZEROMQ;
 function zmq_msg_init_data(msg: PZmqMsg; data: Pointer; size: Cardinal; ffn: TZmqFreeFunction; hint: Pointer): Integer; cdecl; external LIBZEROMQ;
-{$IFDEF EXPERIMENTAL}
 function zmq_msg_send(msg: PZmqMsg; s: Pointer; flags: Integer): Integer; cdecl; external LIBZEROMQ;
 function zmq_msg_recv(msg: PZmqMsg; s: Pointer; flags: Integer): Integer; cdecl; external LIBZEROMQ;
-{$ENDIF}
 function zmq_msg_close(msg: PZmqMsg): Integer; cdecl; external LIBZEROMQ;
 function zmq_msg_move(dest, src: PZmqMsg): Integer; cdecl; external LIBZEROMQ;
 function zmq_msg_copy(dest, src: PZmqMsg): Integer; cdecl; external LIBZEROMQ;
 function zmq_msg_data(msg: PZmqMsg): Pointer; cdecl; external LIBZEROMQ;
 function zmq_msg_size(msg: PZmqMsg): Cardinal; cdecl; external LIBZEROMQ;
-function zmq_getmsgopt (msg: PZmqMsg; option: Integer; optval: Pointer; optvallen: PCardinal): Integer; cdecl; external LIBZEROMQ;
-{$IFDEF EXPERIMENTAL}
 function zmq_msg_more(msg: PZmqMsg): Integer; cdecl; external LIBZEROMQ;
 function zmq_msg_get(msg: PZmqMsg; option: Integer): Integer; cdecl; external LIBZEROMQ;
 function zmq_msg_set(msg: PZmqMsg; option, optval: Integer): Integer; cdecl; external LIBZEROMQ;
-{$ENDIF}
 
 (******************************************************************************)
 (*  0MQ socket definition.                                                    *)
@@ -193,14 +196,14 @@ const
   ZMQ_RCVTIMEO            = 27;
   ZMQ_SNDTIMEO            = 28;
   ZMQ_IPV4ONLY            = 31;
-{$IFDEF EXPERIMENTAL}
   ZMQ_LAST_ENDPOINT       = 32;
   ZMQ_FAIL_UNROUTABLE     = 33;
   ZMQ_TCP_KEEPALIVE       = 34;
   ZMQ_TCP_KEEPALIVE_CNT   = 35;
   ZMQ_TCP_KEEPALIVE_IDLE  = 36;
   ZMQ_TCP_KEEPALIVE_INTVL = 37;
-{$ENDIF}
+  ZMQ_TCP_ACCEPT_FILTER   = 38;
+  ZMQ_MONITOR             = 39;
 
 (*  Message options                                                           *)
   ZMQ_MORE = 1;
@@ -209,23 +212,127 @@ const
   ZMQ_DONTWAIT = 1;
   ZMQ_SNDMORE  = 2;
 
+(******************************************************************************)
+(*  0MQ socket events and monitoring                                          *)
+(******************************************************************************)
+
+(*  Socket transport events (tcp and ipc only)                                *)
+const
+  ZMQ_EVENT_CONNECTED       = 1;
+  ZMQ_EVENT_CONNECT_DELAYED = 2;
+  ZMQ_EVENT_CONNECT_RETRIED = 3;
+
+  ZMQ_EVENT_LISTENING       = 4;
+  ZMQ_EVENT_BIND_FAILED     = 5;
+
+  ZMQ_EVENT_ACCEPTED        = 6;
+  ZMQ_EVENT_ACCEPT_FAILED   = 7;
+
+  ZMQ_EVENT_CLOSED          = 8;
+  ZMQ_EVENT_CLOSE_FAILED    = 9;
+  ZMQ_EVENT_DISCONNECTED    = 10;
+
+(*  Socket event data (union member per event)                                *)
+type
+  PZmqEventData = ^TZmqEventData;
+  TZmqEventData = record
+  case Integer of
+    0: (
+      connected: record
+        addr: PAnsiChar;
+        fd: Integer;
+      end;
+    );
+    1: (
+      connect_delayed: record
+        addr: PAnsiChar;
+        err: Integer;
+      end;
+    );
+    2: (
+      connect_retried: record
+        addr: PAnsiChar;
+        interval: Integer;
+      end;
+    );
+    3: (
+      listening: record
+        addr: PAnsiChar;
+        fd: Integer;
+      end;
+    );
+    4: (
+      bind_failed: record
+        addr: PAnsiChar;
+        err: Integer;
+      end;
+    );
+    5: (
+      accepted: record
+        addr: PAnsiChar;
+        fd: Integer;
+      end;
+    );
+    6: (
+      accept_failed: record
+        addr: PAnsiChar;
+        err: Integer;
+      end;
+    );
+    7: (
+      closed: record
+        addr: PAnsiChar;
+        fd: Integer;
+      end;
+    );
+    8: (
+      close_failed: record
+        addr: PAnsiChar;
+        err: Integer;
+      end;
+    );
+    9: (
+      disconnected: record
+        addr: PAnsiChar;
+        fd: Integer;
+      end;
+    );
+  end;
+
+(*  Callback template for socket state changes                                *)
+  TZmqMonitorFunction = procedure(s: Pointer; event: Integer; data: PZmqEventData);
+
 function zmq_socket(p: Pointer; kind: Integer): Pointer; cdecl; external LIBZEROMQ;
 function zmq_close(s: Pointer): Integer; cdecl; external LIBZEROMQ;
 function zmq_setsockopt(s: Pointer; option: Integer; const optval: Pointer; optvallen: Cardinal): Integer; cdecl; external LIBZEROMQ;
 function zmq_getsockopt (s: Pointer; option: Integer; optval: Pointer; optvallen: PCardinal): Integer; cdecl; external LIBZEROMQ;
 function zmq_bind(s: Pointer; const addr: PAnsiChar): Integer; cdecl; external LIBZEROMQ;
 function zmq_connect(s: Pointer; const addr: PAnsiChar): Integer; cdecl; external LIBZEROMQ;
+function zmq_unbind(s: Pointer; const addr: PAnsiChar): Integer; cdecl; external LIBZEROMQ;
+function zmq_disconnect(s: Pointer; const addr: PAnsiChar): Integer; cdecl; external LIBZEROMQ;
 function zmq_send(s: Pointer; const buf: Pointer; len: Cardinal; flags: Integer): Integer; cdecl; external LIBZEROMQ;
 function zmq_recv(s, buf: Pointer; len: Cardinal; flags: Integer): Integer; cdecl; external LIBZEROMQ;
+
 function zmq_sendmsg(s: Pointer; msg: PZmqMsg; flags: Integer): Integer; cdecl; external LIBZEROMQ;
 function zmq_recvmsg(s: Pointer; msg: PZmqMsg; flags: Integer): Integer; cdecl; external LIBZEROMQ;
+
+(*  Experimental                                                              *)
+type
+  PZMQIOVec = ^TZMQIOVec;
+  TZMQIOVec = record
+    iov_base: Pointer;
+    iov_len: Cardinal;
+  end;
+
+function zmq_sendiov(s: Pointer; iov: PZMQIOVec; count: Cardinal; flags: Integer): Integer; cdecl; external LIBZEROMQ;
+function zmq_recviov(s: Pointer; iov: PZMQIOVec; count: PCardinal; flags: Integer): Integer; cdecl; external LIBZEROMQ;
 
 (******************************************************************************)
 (*  I/O multiplexing.                                                         *)
 (******************************************************************************)
 
 const
-  ZMQ_POLLIN = 1;
+  ZMQ_POLLIN  = 1;
   ZMQ_POLLOUT = 2;
   ZMQ_POLLERR = 4;
 
@@ -240,20 +347,6 @@ type
 
 function zmq_poll(items: PZmqPollItem; nitems: Integer; timeout: LongInt): Integer; cdecl; external LIBZEROMQ;
 
-{$IFDEF EXPERIMENTAL}
-(******************************************************************************)
-(*  Experimental                                                              *)
-(******************************************************************************)
-type
-  PZMQIOVec = ^TZMQIOVec;
-  TZMQIOVec = record
-    iov_base: Pointer;
-    iov_len: Cardinal;
-  end;
-
-function zmq_sendiov(s: Pointer; iov: PZMQIOVec; count: Cardinal; flags: Integer): Integer; cdecl; external LIBZEROMQ;
-function zmq_recviov(s: Pointer; iov: PZMQIOVec; count: PCardinal; flags: Integer): Integer; cdecl; external LIBZEROMQ;
-
 (******************************************************************************)
 (*  Devices - Experimental.                                                   *)
 (******************************************************************************)
@@ -264,7 +357,19 @@ const
   ZMQ_QUEUE     = 3;
 
 function zmq_device(device: Integer; insocket, outsocket: Pointer): Integer; cdecl; external LIBZEROMQ;
-{$ENDIF}
+
+(*  Helper functions are used by perf tests so that they don't have to care   *)
+(*  about minutiae of time-related functions on different OS platforms.       *)
+
+(*  Starts the stopwatch. Returns the handle to the watch.                    *)
+function zmq_stopwatch_start: Pointer; cdecl; external LIBZEROMQ;
+
+(*  Stops the stopwatch. Returns the number of microseconds elapsed since     *)
+(*  the stopwatch was started.                                                *)
+function zmq_stopwatch_stop(watch: Pointer): Cardinal; cdecl; external LIBZEROMQ;
+
+(*  Sleeps for specified number of seconds.                                   *)
+procedure zmq_sleep(seconds: Integer); cdecl; external LIBZEROMQ;
 
 implementation
 
