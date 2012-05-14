@@ -68,6 +68,7 @@ type
     ['{593FC079-23AD-451E-8877-11584E93D80E}']
     function Start(Kind: ZMQ): IZMQPair;
     function StartDevice(Kind: ZMQDevice; Frontend, Backend: IZMQPair): Integer;
+    procedure PollEmulatedDevice(Kind: ZMQDevice; Frontend, Backend: IZMQPair);
     function Poller: IZMQPoll;
     function InitMessage(var Msg: TZmqMsg; Size: Integer = 0): Integer;
     function CloseMessage(var Msg: TZmqMsg): Integer;
@@ -82,6 +83,7 @@ type
     destructor Destroy; override;
     function Start(Kind: ZMQ): IZMQPair;
     function StartDevice(Kind: ZMQDevice; Frontend, Backend: IZMQPair): Integer;
+    procedure PollEmulatedDevice(Kind: ZMQDevice; Frontend, Backend: IZMQPair);
     function Poller: IZMQPoll;
     function InitMessage(var Msg: TZmqMsg; Size: Integer = 0): Integer;
     function CloseMessage(var Msg: TZmqMsg): Integer;
@@ -153,7 +155,12 @@ end;
 
 function TZeroMQ.StartDevice(Kind: ZMQDevice; Frontend,
   Backend: IZMQPair): Integer;
-{$IFNDEF EXPERIMENTAL}
+begin
+  Result := zmq_device(Ord(Kind) + 1, (Frontend as TZMQPair).FSocket, (Backend as TZMQPair).FSocket);
+end;
+
+procedure TZeroMQ.PollEmulatedDevice(Kind: ZMQDevice; Frontend,
+  Backend: IZMQPair);
 const
   R_OR_D = [ZMQ.Router, ZMQ.Dealer];
   P_OR_S = [ZMQ.Publisher, ZMQ.Subscriber];
@@ -161,11 +168,7 @@ const
 var
   P: IZMQPoll;
   FST, BST: ZMQ;
-{$ENDIF}
 begin
-{$IFDEF EXPERIMENTAL}
-  Result := zmq_device(Ord(Kind) + 1, (Frontend as TZMQPair).FSocket, (Backend as TZMQPair).FSocket);
-{$ELSE}
   FST := Frontend.SocketType;
   BST := Backend.SocketType;
   if   ((Kind = ZMQDevice.Queue)     and (FST <> BST) and (FST in R_OR_D) and (BST in R_OR_D))
@@ -194,10 +197,7 @@ begin
     while True do
       if P.PollOnce > 0 then
         P.FireEvents;
-  end
-  else
-    Result := -1;
-{$ENDIF}
+  end;
 end;
 
 function TZeroMQ.InitMessage(var Msg: TZmqMsg; Size: Integer): Integer;

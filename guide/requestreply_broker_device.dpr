@@ -19,10 +19,6 @@ begin
   Backend := Z.Start(ZMQ.Dealer);
   Backend.Bind('tcp://*:5560');
 
-  { For now, as long as I can only compile libzmq 3.1.0 beta on my Windows box,
-    ZeroMQ devices are emulated by ZeroMQ.Wrapper with IZMQPoll and by forwarding
-    messages between Frontend and Backend the two directions }
-
   Z.StartDevice(ZMQDevice.Queue, Frontend, Backend);
 end;
 
