@@ -35,7 +35,7 @@ const
   LIBXS = 'libxs.dll';
 
 (******************************************************************************)
-(*  Crossroads versioning support.                                                   *)
+(*  Crossroads versioning support.                                            *)
 (******************************************************************************)
 
 const
@@ -53,7 +53,7 @@ const
 procedure xs_version (major, minor, patch: PInteger); cdecl; external LIBXS;
 
 (******************************************************************************)
-(*  Crossroads errors.                                                               *)
+(*  Crossroads errors.                                                        *)
 (******************************************************************************)
 
 (*  A number random enough not to collide with different errno ranges on      *)
@@ -86,11 +86,11 @@ const
 (*  is linked to an application that uses different CRT library.              *)
 function xs_errno(): Integer; cdecl; external LIBXS;
 
-(*  Resolves system errors and Crossroads errors to human-readable string.           *)
+(*  Resolves system errors and Crossroads errors to human-readable string.    *)
 function xs_strerror(errnum: Integer): PAnsiChar; cdecl; external LIBXS;
 
 (******************************************************************************)
-(*  Crossroads message definition.                                                   *)
+(*  Crossroads message definition.                                            *)
 (******************************************************************************)
 
 const
@@ -137,7 +137,7 @@ function xs_term (context: Pointer): Integer; cdecl; external LIBXS;
 function xs_setctxopt(context: Pointer; option: Integer; const optval: Pointer; optvallen: Cardinal): Integer; cdecl; external LIBXS;
 
 (******************************************************************************)
-(*  Crossroads socket definition.                                                    *)
+(*  Crossroads socket definition.                                             *)
 (******************************************************************************)
 const
 (*  Socket types.                                                             *)
