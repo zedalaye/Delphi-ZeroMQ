@@ -132,8 +132,8 @@ const
   XS_IO_THREADS = 2;
   XS_PLUGIN = 3;
 
-function xs_init(): Pointer; cdecl; external LIBXS;
-function xs_term (context: Pointer): Integer; cdecl; external LIBXS;
+function xs_init: Pointer; cdecl; external LIBXS;
+function xs_term(context: Pointer): Integer; cdecl; external LIBXS;
 function xs_setctxopt(context: Pointer; option: Integer; const optval: Pointer; optvallen: Cardinal): Integer; cdecl; external LIBXS;
 
 (******************************************************************************)
