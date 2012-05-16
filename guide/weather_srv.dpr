@@ -5,7 +5,7 @@ program weather_srv;
 {$R *.res}
 
 uses
-  System.SysUtils, ZeroMQ.Wrapper;
+  System.SysUtils, ZeroMQ;
 
 procedure Run;
 var
@@ -15,7 +15,7 @@ var
   update: string;
 begin
   Z := TZeroMQ.Create;
-  P := Z.Start(ZMQ.Publisher);
+  P := Z.Start(ZMQSocket.Publisher);
   P.Bind('tcp://*:5556');
   Writeln('Started weather server (TCP/5556)...');
 

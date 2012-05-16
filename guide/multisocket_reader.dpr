@@ -5,7 +5,7 @@ program multisocket_reader;
 {$R *.res}
 
 uses
-  System.SysUtils, ZeroMQ.API, ZeroMQ.Wrapper;
+  System.SysUtils, ZeroMQ.API, ZeroMQ;
 
 procedure Run;
 var
@@ -15,10 +15,10 @@ var
   task, update: TZmqMsg;
 begin
   Z := TZeroMQ.Create;
-  Receiver := Z.Start(ZMQ.Pull);
+  Receiver := Z.Start(ZMQSocket.Pull);
   Receiver.Connect('tcp://localhost:5557');
 
-  Subscriber := Z.Start(ZMQ.Subscriber);
+  Subscriber := Z.Start(ZMQSocket.Subscriber);
   Subscriber.Connect('tcp://localhost:5556');
   Subscriber.Subscribe('10001 ');
 

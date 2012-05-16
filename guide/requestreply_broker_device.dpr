@@ -5,7 +5,7 @@ program requestreply_broker_device;
 {$R *.res}
 
 uses
-  System.SysUtils, ZeroMQ.Wrapper;
+  System.SysUtils, ZeroMQ;
 
 procedure Run;
 var
@@ -13,10 +13,10 @@ var
   Frontend, Backend: IZMQPair;
 begin
   Z := TZeroMQ.Create;
-  Frontend := Z.Start(ZMQ.Router);
+  Frontend := Z.Start(ZMQSocket.Router);
   Frontend.Bind('tcp://*:5559');
 
-  Backend := Z.Start(ZMQ.Dealer);
+  Backend := Z.Start(ZMQSocket.Dealer);
   Backend.Bind('tcp://*:5560');
 
   Z.StartDevice(ZMQDevice.Queue, Frontend, Backend);

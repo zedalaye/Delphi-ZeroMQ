@@ -5,7 +5,7 @@ program weather_cli;
 {$R *.res}
 
 uses
-  System.SysUtils, ZeroMQ.Wrapper;
+  System.SysUtils, ZeroMQ;
 
 procedure Run;
 
@@ -43,7 +43,7 @@ var
   zipcode, temperature, relhumidity: Integer;
 begin
   Z := TZeroMQ.Create;
-  S := Z.Start(ZMQ.Subscriber);
+  S := Z.Start(ZMQSocket.Subscriber);
 
   // Socket to talk to server
   Writeln('Collecting updates from weather server...');

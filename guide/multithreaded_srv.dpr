@@ -5,7 +5,7 @@ program multithreaded_srv;
 {$R *.res}
 
 uses
-  System.SysUtils, System.Classes, ZeroMQ.Wrapper;
+  System.SysUtils, System.Classes, ZeroMQ;
 
 type
   TWorkerThread = class(TThread)
@@ -31,7 +31,7 @@ var
   Receiver: IZMQPair;
   Request: string;
 begin
-  Receiver := FContext.Start(ZMQ.Responder);
+  Receiver := FContext.Start(ZMQSocket.Responder);
   Receiver.Connect('inproc://workers');
 
   while not Terminated do
@@ -50,10 +50,10 @@ var
   ThreadsCount: Integer;
 begin
   Z := TZeroMQ.Create;
-  Clients := Z.Start(ZMQ.Router);
+  Clients := Z.Start(ZMQSocket.Router);
   Clients.Bind('tcp://*:5555');
 
-  Workers := Z.Start(ZMQ.Dealer);
+  Workers := Z.Start(ZMQSocket.Dealer);
   Workers.Bind('inproc://workers');
 
   for ThreadsCount := 0 to 5 - 1 do

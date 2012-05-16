@@ -5,7 +5,7 @@ program multisocket_poller;
 {$R *.res}
 
 uses
-  System.SysUtils, ZeroMQ.Wrapper;
+  System.SysUtils, ZeroMQ;
 
 procedure Run;
 var
@@ -14,10 +14,10 @@ var
   Poll: IZMQPoll;
 begin
   Z := TZeroMQ.Create;
-  Receiver := Z.Start(ZMQ.Pull);
+  Receiver := Z.Start(ZMQSocket.Pull);
   Receiver.Connect('tcp://localhost:5557');
 
-  Subscriber := Z.Start(ZMQ.Subscriber);
+  Subscriber := Z.Start(ZMQSocket.Subscriber);
   Subscriber.Connect('tcp://localhost:5556');
   Subscriber.Subscribe('10001 ');
 

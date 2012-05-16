@@ -5,7 +5,7 @@ program hello_cli;
 {$R *.res}
 
 uses
-  System.SysUtils, ZeroMQ.Wrapper;
+  System.SysUtils, ZeroMQ;
 
 procedure Run;
 var
@@ -15,7 +15,7 @@ var
   S: string;
 begin
   Z := TZeroMQ.Create;
-  R := Z.Start(ZMQ.Requester);
+  R := Z.Start(ZMQSocket.Requester);
 
   Writeln('Connecting to hello world server...');
   R.Connect('tcp://localhost:5555');

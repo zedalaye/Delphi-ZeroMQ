@@ -5,7 +5,7 @@ program hello_srv;
 {$R *.res}
 
 uses
-  System.SysUtils, ZeroMQ.Wrapper;
+  System.SysUtils, ZeroMQ, Crossroads.IO;
 
 procedure Run;
 var
@@ -14,7 +14,7 @@ var
   S: string;
 begin
   Z := TZeroMQ.Create;
-  R := Z.Start(ZMQ.Responder);
+  R := Z.Start(ZMQSocket.Responder);
   R.Bind('tcp://*:5555');
   Writeln('Started hello world server (TCP/5555)...');
 

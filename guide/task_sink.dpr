@@ -5,7 +5,7 @@ program task_sink;
 {$R *.res}
 
 uses
-  Winapi.Windows, System.SysUtils, ZeroMQ.Wrapper;
+  Winapi.Windows, System.SysUtils, ZeroMQ;
 
 procedure Run;
 var
@@ -16,7 +16,7 @@ var
   S: string;
 begin
   Z := TZeroMQ.Create;
-  Receiver := Z.Start(ZMQ.Pull);
+  Receiver := Z.Start(ZMQSocket.Pull);
   Receiver.Bind('tcp://*:5558');
   Writeln('Started task sink (TCP/5558)...');
 

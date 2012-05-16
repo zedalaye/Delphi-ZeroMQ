@@ -5,7 +5,7 @@ program task_worker;
 {$R *.res}
 
 uses
-  System.SysUtils, ZeroMQ.Wrapper;
+  System.SysUtils, ZeroMQ;
 
 procedure Run;
 var
@@ -15,10 +15,10 @@ var
   S: string;
 begin
   Z := TZeroMQ.Create;
-  Receiver := Z.Start(ZMQ.Pull);
+  Receiver := Z.Start(ZMQSocket.Pull);
   Receiver.Connect('tcp://localhost:5557');
 
-  Sender := Z.Start(ZMQ.Push);
+  Sender := Z.Start(ZMQSocket.Push);
   Sender.Connect('tcp://localhost:5558');
 
   while True do

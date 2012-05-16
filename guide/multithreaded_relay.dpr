@@ -5,7 +5,7 @@ program multithreaded_relay;
 {$R *.res}
 
 uses
-  System.SysUtils, System.Classes, ZeroMQ.Wrapper;
+  System.SysUtils, System.Classes, ZeroMQ;
 
 type
   TWorkerThread = class(TThread)
@@ -39,7 +39,7 @@ procedure TStep1.Execute;
 var
   Emitter: IZMQPair;
 begin
-  Emitter := FContext.Start(ZMQ.Pair);
+  Emitter := FContext.Start(ZMQSocket.Pair);
   Emitter.Connect('inproc://step2');
   WriteLn('Step 1 ready, signaling step 2');
   Emitter.SendString('READY');
@@ -51,14 +51,14 @@ procedure TStep2.Execute;
 var
   Receiver, Emitter: IZMQPair;
 begin
-  Receiver := FContext.Start(ZMQ.Pair);
+  Receiver := FContext.Start(ZMQSocket.Pair);
   Receiver.Bind('inproc://step2');
 
   TStep1.Create(FContext);
 
   Receiver.ReceiveString;
 
-  Emitter := FContext.Start(ZMQ.Pair);
+  Emitter := FContext.Start(ZMQSocket.Pair);
   Emitter.Connect('inproc://step3');
   WriteLn('Step 2 ready, signaling step 3');
   Emitter.SendString('READY');
@@ -70,7 +70,7 @@ var
   Receiver: IZMQPair;
 begin
   Z := TZeroMQ.Create;
-  Receiver := Z.Start(ZMQ.Pair);
+  Receiver := Z.Start(ZMQSocket.Pair);
   Receiver.Bind('inproc://step3');
 
   TStep2.Create(Z);

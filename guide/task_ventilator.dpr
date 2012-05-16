@@ -5,7 +5,7 @@ program task_ventilator;
 {$R *.res}
 
 uses
-  System.SysUtils, ZeroMQ.Wrapper;
+  System.SysUtils, ZeroMQ;
 
 procedure Run;
 var
@@ -15,11 +15,11 @@ var
   I, C, L: Integer;
 begin
   Z := TZeroMQ.Create;
-  Sender := Z.Start(ZMQ.Push);
+  Sender := Z.Start(ZMQSocket.Push);
   Sender.Bind('tcp://*:5557');
   Writeln('Started task ventilator (TCP/5557)...');
 
-  Sink := Z.Start(ZMQ.Push);
+  Sink := Z.Start(ZMQSocket.Push);
   Sink.Connect('tcp://localhost:5558');
 
   Writeln('Press Enter when the workers are ready.');

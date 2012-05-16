@@ -5,7 +5,7 @@ program weather_proxy;
 {$R *.res}
 
 uses
-  System.SysUtils, ZeroMQ.Wrapper;
+  System.SysUtils, ZeroMQ;
 
 procedure Run;
 var
@@ -15,11 +15,11 @@ var
   Messages: TArray<string>;
 begin
   Z := TZeroMQ.Create;
-  Frontend := Z.Start(ZMQ.Subscriber);
+  Frontend := Z.Start(ZMQSocket.Subscriber);
   Frontend.Connect('tcp://localhost:5556');
   Frontend.Subscribe('');
 
-  Backend := Z.Start(ZMQ.Publisher);
+  Backend := Z.Start(ZMQSocket.Publisher);
   Backend.Bind('tcp://*:8100');
 
   while True do

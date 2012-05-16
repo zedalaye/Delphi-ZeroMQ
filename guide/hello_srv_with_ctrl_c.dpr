@@ -5,7 +5,7 @@ program hello_srv_with_ctrl_c;
 {$R *.res}
 
 uses
-  Winapi.Windows, System.SysUtils, ZeroMQ.Wrapper;
+  Winapi.Windows, System.SysUtils, ZeroMQ;
 
 var
   Stopped: Boolean;
@@ -17,7 +17,7 @@ var
   S: string;
 begin
   Z := TZeroMQ.Create;
-  R := Z.Start(ZMQ.Responder);
+  R := Z.Start(ZMQSocket.Responder);
   R.Bind('tcp://*:5555');
   Writeln('Started hello world server (TCP/5555)...');
 

@@ -3,7 +3,7 @@
        Pierr Yager <pierre.y@gmail.com>
 *)
 
-unit ZeroMQ.Wrapper;
+unit ZeroMQ;
 
 interface
 
@@ -12,7 +12,7 @@ uses
   ZeroMQ.API;
 
 type
-  ZMQ = (
+  ZMQSocket = (
     Pair,
     Publisher, Subscriber,
     Requester, Responder,
@@ -31,7 +31,7 @@ type
     { Client pair }
     function Connect(const Address: string): Integer;
     { Socket Options }
-    function SocketType: ZMQ;
+    function SocketType: ZMQSocket;
     { Required for ZMQ.Subscriber pair }
     function Subscribe(const Filter: string): Integer;
     function HaveMore: Boolean;
@@ -66,7 +66,7 @@ type
 
   IZeroMQ = interface
     ['{593FC079-23AD-451E-8877-11584E93D80E}']
-    function Start(Kind: ZMQ): IZMQPair;
+    function Start(Kind: ZMQSocket): IZMQPair;
     function StartDevice(Kind: ZMQDevice; Frontend, Backend: IZMQPair): Integer;
     procedure PollEmulatedDevice(Kind: ZMQDevice; Frontend, Backend: IZMQPair);
     function Poller: IZMQPoll;
@@ -81,7 +81,7 @@ type
   public
     constructor Create(IoThreads: Integer = 1);
     destructor Destroy; override;
-    function Start(Kind: ZMQ): IZMQPair;
+    function Start(Kind: ZMQSocket): IZMQPair;
     function StartDevice(Kind: ZMQDevice; Frontend, Backend: IZMQPair): Integer;
     procedure PollEmulatedDevice(Kind: ZMQDevice; Frontend, Backend: IZMQPair);
     function Poller: IZMQPoll;
@@ -106,7 +106,7 @@ type
     function Subscribe(const Filter: string): Integer;
     function HaveMore: Boolean;
     { Socket Options }
-    function SocketType: ZMQ;
+    function SocketType: ZMQSocket;
     { Raw messages }
     function SendMessage(var Msg: TZmqMsg; Flags: MessageFlags): Integer;
     function ReceiveMessage(var Msg: TZmqMsg; Flags: MessageFlags): Integer;
@@ -147,7 +147,7 @@ begin
   inherited;
 end;
 
-function TZeroMQ.Start(Kind: ZMQ): IZMQPair;
+function TZeroMQ.Start(Kind: ZMQSocket): IZMQPair;
 begin
   Result := TZMQPair.Create(zmq_socket(FContext, Ord(Kind)));
   FPairs.Add(Result);
@@ -162,12 +162,12 @@ end;
 procedure TZeroMQ.PollEmulatedDevice(Kind: ZMQDevice; Frontend,
   Backend: IZMQPair);
 const
-  R_OR_D = [ZMQ.Router, ZMQ.Dealer];
-  P_OR_S = [ZMQ.Publisher, ZMQ.Subscriber];
-  P_OR_P = [ZMQ.Push, ZMQ.Pull];
+  R_OR_D = [ZMQSocket.Router, ZMQSocket.Dealer];
+  P_OR_S = [ZMQSocket.Publisher, ZMQSocket.Subscriber];
+  P_OR_P = [ZMQSocket.Push, ZMQSocket.Pull];
 var
   P: IZMQPoll;
-  FST, BST: ZMQ;
+  FST, BST: ZMQSocket;
 begin
   FST := Frontend.SocketType;
   BST := Backend.SocketType;
@@ -348,7 +348,7 @@ begin
   end;
 end;
 
-function TZMQPair.SocketType: ZMQ;
+function TZMQPair.SocketType: ZMQSocket;
 var
   RawType: Integer;
   OptionSize: Integer;
@@ -356,7 +356,7 @@ begin
   RawType := 0;
   OptionSize := SizeOf(RawType);
   zmq_getsockopt(FSocket, ZMQ_TYPE, @RawType, @OptionSize);
-  Result := ZMQ(RawType)
+  Result := ZMQSocket(RawType)
 end;
 
 procedure TZMQPair.ForwardMessage(Pair: IZMQPair);

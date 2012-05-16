@@ -5,7 +5,7 @@ program requestreply_srv;
 {$R *.res}
 
 uses
-  System.SysUtils, ZeroMQ.Wrapper;
+  System.SysUtils, ZeroMQ;
 
 procedure Run;
 var
@@ -14,7 +14,7 @@ var
   Request: string;
 begin
   Z := TZeroMQ.Create;
-  Responder := Z.Start(ZMQ.Responder);
+  Responder := Z.Start(ZMQSocket.Responder);
   Responder.Connect('tcp://localhost:5560');
 
   while True do

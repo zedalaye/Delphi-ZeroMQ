@@ -5,7 +5,7 @@ program json_time_cli;
 {$R *.res}
 
 uses
-  Winapi.Windows, System.SysUtils, ZeroMQ.Wrapper, SuperObject;
+  Winapi.Windows, System.SysUtils, ZeroMQ, SuperObject;
 
 procedure Run;
 var
@@ -16,7 +16,7 @@ var
   T: Cardinal;
 begin
   Z := TZeroMQ.Create;
-  Subscriber := Z.Start(ZMQ.Subscriber);
+  Subscriber := Z.Start(ZMQSocket.Subscriber);
   Subscriber.Connect('tcp://localhost:5550');
   Subscriber.Subscribe('');
 

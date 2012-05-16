@@ -5,7 +5,7 @@ program json_time_srv;
 {$R *.res}
 
 uses
-  Winapi.Windows, System.SysUtils, ZeroMQ.Wrapper, SuperObject;
+  Winapi.Windows, System.SysUtils, ZeroMQ, SuperObject;
 
 var
   Stopped: Boolean;
@@ -19,7 +19,7 @@ var
   I: Integer;
 begin
   Z := TZeroMQ.Create;
-  Sender := Z.Start(ZMQ.Publisher);
+  Sender := Z.Start(ZMQSocket.Publisher);
   Sender.Bind('tcp://*:5550');
   Writeln('Started time server (TCP/5550)...');
 
