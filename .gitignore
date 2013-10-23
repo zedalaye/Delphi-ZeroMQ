@@ -1,8 +1,10 @@
-
+__history
 *.dsk
 *.~dsk
 *.local
-/guide/__history
-/__history
-/demo/__history
 *.tvsconfig
+*.drc
+*.map
+*.exe
+*.dcu
+*.identcache
