@@ -287,9 +287,9 @@ const
 (*  Socket event data (union member per event)                                *)
 type
   PZmqEventData = ^TZmqEventData;
-  TZmqEventData = record
-    event: Word;  // id of the event as bitfield
-    value: Integer;   // value is either error code, fd or reconnect interval
+  TZmqEventData = packed record
+    event: Word;     // id of the event as bitfield
+    value: Integer;  // value is either error code, fd or reconnect interval
   end;
 
 function zmq_socket(p: Pointer; kind: Integer): Pointer; cdecl; external LIBZEROMQ;

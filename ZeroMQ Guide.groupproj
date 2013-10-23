@@ -36,12 +36,6 @@
 			<Projects Include="guide\multisocket_poller.dproj">
 				<Dependencies/>
 			</Projects>
-			<Projects Include="demo\json_time_srv.dproj">
-				<Dependencies/>
-			</Projects>
-			<Projects Include="demo\json_time_cli.dproj">
-				<Dependencies/>
-			</Projects>
 			<Projects Include="guide\requestreply_cli.dproj">
 				<Dependencies/>
 			</Projects>
@@ -72,181 +66,163 @@
 			<MSBuild Projects="guide\hello_srv.dproj"/>
 		</Target>
 		<Target Name="hello_srv:Clean">
-			<MSBuild Projects="guide\hello_srv.dproj" Targets="Clean"/>
+			<MSBuild Targets="Clean" Projects="guide\hello_srv.dproj"/>
 		</Target>
 		<Target Name="hello_srv:Make">
-			<MSBuild Projects="guide\hello_srv.dproj" Targets="Make"/>
+			<MSBuild Targets="Make" Projects="guide\hello_srv.dproj"/>
 		</Target>
 		<Target Name="hello_srv_with_ctrl_c">
 			<MSBuild Projects="guide\hello_srv_with_ctrl_c.dproj"/>
 		</Target>
 		<Target Name="hello_srv_with_ctrl_c:Clean">
-			<MSBuild Projects="guide\hello_srv_with_ctrl_c.dproj" Targets="Clean"/>
+			<MSBuild Targets="Clean" Projects="guide\hello_srv_with_ctrl_c.dproj"/>
 		</Target>
 		<Target Name="hello_srv_with_ctrl_c:Make">
-			<MSBuild Projects="guide\hello_srv_with_ctrl_c.dproj" Targets="Make"/>
+			<MSBuild Targets="Make" Projects="guide\hello_srv_with_ctrl_c.dproj"/>
 		</Target>
 		<Target Name="hello_cli">
 			<MSBuild Projects="guide\hello_cli.dproj"/>
 		</Target>
 		<Target Name="hello_cli:Clean">
-			<MSBuild Projects="guide\hello_cli.dproj" Targets="Clean"/>
+			<MSBuild Targets="Clean" Projects="guide\hello_cli.dproj"/>
 		</Target>
 		<Target Name="hello_cli:Make">
-			<MSBuild Projects="guide\hello_cli.dproj" Targets="Make"/>
+			<MSBuild Targets="Make" Projects="guide\hello_cli.dproj"/>
 		</Target>
 		<Target Name="weather_srv">
 			<MSBuild Projects="guide\weather_srv.dproj"/>
 		</Target>
 		<Target Name="weather_srv:Clean">
-			<MSBuild Projects="guide\weather_srv.dproj" Targets="Clean"/>
+			<MSBuild Targets="Clean" Projects="guide\weather_srv.dproj"/>
 		</Target>
 		<Target Name="weather_srv:Make">
-			<MSBuild Projects="guide\weather_srv.dproj" Targets="Make"/>
+			<MSBuild Targets="Make" Projects="guide\weather_srv.dproj"/>
 		</Target>
 		<Target Name="weather_cli">
 			<MSBuild Projects="guide\weather_cli.dproj"/>
 		</Target>
 		<Target Name="weather_cli:Clean">
-			<MSBuild Projects="guide\weather_cli.dproj" Targets="Clean"/>
+			<MSBuild Targets="Clean" Projects="guide\weather_cli.dproj"/>
 		</Target>
 		<Target Name="weather_cli:Make">
-			<MSBuild Projects="guide\weather_cli.dproj" Targets="Make"/>
+			<MSBuild Targets="Make" Projects="guide\weather_cli.dproj"/>
 		</Target>
 		<Target Name="weather_proxy">
 			<MSBuild Projects="guide\weather_proxy.dproj"/>
 		</Target>
 		<Target Name="weather_proxy:Clean">
-			<MSBuild Projects="guide\weather_proxy.dproj" Targets="Clean"/>
+			<MSBuild Targets="Clean" Projects="guide\weather_proxy.dproj"/>
 		</Target>
 		<Target Name="weather_proxy:Make">
-			<MSBuild Projects="guide\weather_proxy.dproj" Targets="Make"/>
+			<MSBuild Targets="Make" Projects="guide\weather_proxy.dproj"/>
 		</Target>
 		<Target Name="task_ventilator">
 			<MSBuild Projects="guide\task_ventilator.dproj"/>
 		</Target>
 		<Target Name="task_ventilator:Clean">
-			<MSBuild Projects="guide\task_ventilator.dproj" Targets="Clean"/>
+			<MSBuild Targets="Clean" Projects="guide\task_ventilator.dproj"/>
 		</Target>
 		<Target Name="task_ventilator:Make">
-			<MSBuild Projects="guide\task_ventilator.dproj" Targets="Make"/>
+			<MSBuild Targets="Make" Projects="guide\task_ventilator.dproj"/>
 		</Target>
 		<Target Name="task_worker">
 			<MSBuild Projects="guide\task_worker.dproj"/>
 		</Target>
 		<Target Name="task_worker:Clean">
-			<MSBuild Projects="guide\task_worker.dproj" Targets="Clean"/>
+			<MSBuild Targets="Clean" Projects="guide\task_worker.dproj"/>
 		</Target>
 		<Target Name="task_worker:Make">
-			<MSBuild Projects="guide\task_worker.dproj" Targets="Make"/>
+			<MSBuild Targets="Make" Projects="guide\task_worker.dproj"/>
 		</Target>
 		<Target Name="task_sink">
 			<MSBuild Projects="guide\task_sink.dproj"/>
 		</Target>
 		<Target Name="task_sink:Clean">
-			<MSBuild Projects="guide\task_sink.dproj" Targets="Clean"/>
+			<MSBuild Targets="Clean" Projects="guide\task_sink.dproj"/>
 		</Target>
 		<Target Name="task_sink:Make">
-			<MSBuild Projects="guide\task_sink.dproj" Targets="Make"/>
+			<MSBuild Targets="Make" Projects="guide\task_sink.dproj"/>
 		</Target>
 		<Target Name="multisocket_reader">
 			<MSBuild Projects="guide\multisocket_reader.dproj"/>
 		</Target>
 		<Target Name="multisocket_reader:Clean">
-			<MSBuild Projects="guide\multisocket_reader.dproj" Targets="Clean"/>
+			<MSBuild Targets="Clean" Projects="guide\multisocket_reader.dproj"/>
 		</Target>
 		<Target Name="multisocket_reader:Make">
-			<MSBuild Projects="guide\multisocket_reader.dproj" Targets="Make"/>
+			<MSBuild Targets="Make" Projects="guide\multisocket_reader.dproj"/>
 		</Target>
 		<Target Name="multisocket_poller">
 			<MSBuild Projects="guide\multisocket_poller.dproj"/>
 		</Target>
 		<Target Name="multisocket_poller:Clean">
-			<MSBuild Projects="guide\multisocket_poller.dproj" Targets="Clean"/>
+			<MSBuild Targets="Clean" Projects="guide\multisocket_poller.dproj"/>
 		</Target>
 		<Target Name="multisocket_poller:Make">
-			<MSBuild Projects="guide\multisocket_poller.dproj" Targets="Make"/>
-		</Target>
-		<Target Name="json_time_srv">
-			<MSBuild Projects="demo\json_time_srv.dproj"/>
-		</Target>
-		<Target Name="json_time_srv:Clean">
-			<MSBuild Projects="demo\json_time_srv.dproj" Targets="Clean"/>
-		</Target>
-		<Target Name="json_time_srv:Make">
-			<MSBuild Projects="demo\json_time_srv.dproj" Targets="Make"/>
-		</Target>
-		<Target Name="json_time_cli">
-			<MSBuild Projects="demo\json_time_cli.dproj"/>
-		</Target>
-		<Target Name="json_time_cli:Clean">
-			<MSBuild Projects="demo\json_time_cli.dproj" Targets="Clean"/>
-		</Target>
-		<Target Name="json_time_cli:Make">
-			<MSBuild Projects="demo\json_time_cli.dproj" Targets="Make"/>
+			<MSBuild Targets="Make" Projects="guide\multisocket_poller.dproj"/>
 		</Target>
 		<Target Name="requestreply_cli">
 			<MSBuild Projects="guide\requestreply_cli.dproj"/>
 		</Target>
 		<Target Name="requestreply_cli:Clean">
-			<MSBuild Projects="guide\requestreply_cli.dproj" Targets="Clean"/>
+			<MSBuild Targets="Clean" Projects="guide\requestreply_cli.dproj"/>
 		</Target>
 		<Target Name="requestreply_cli:Make">
-			<MSBuild Projects="guide\requestreply_cli.dproj" Targets="Make"/>
+			<MSBuild Targets="Make" Projects="guide\requestreply_cli.dproj"/>
 		</Target>
 		<Target Name="requestreply_srv">
 			<MSBuild Projects="guide\requestreply_srv.dproj"/>
 		</Target>
 		<Target Name="requestreply_srv:Clean">
-			<MSBuild Projects="guide\requestreply_srv.dproj" Targets="Clean"/>
+			<MSBuild Targets="Clean" Projects="guide\requestreply_srv.dproj"/>
 		</Target>
 		<Target Name="requestreply_srv:Make">
-			<MSBuild Projects="guide\requestreply_srv.dproj" Targets="Make"/>
+			<MSBuild Targets="Make" Projects="guide\requestreply_srv.dproj"/>
 		</Target>
 		<Target Name="requestreply_broker">
 			<MSBuild Projects="guide\requestreply_broker.dproj"/>
 		</Target>
 		<Target Name="requestreply_broker:Clean">
-			<MSBuild Projects="guide\requestreply_broker.dproj" Targets="Clean"/>
+			<MSBuild Targets="Clean" Projects="guide\requestreply_broker.dproj"/>
 		</Target>
 		<Target Name="requestreply_broker:Make">
-			<MSBuild Projects="guide\requestreply_broker.dproj" Targets="Make"/>
+			<MSBuild Targets="Make" Projects="guide\requestreply_broker.dproj"/>
 		</Target>
 		<Target Name="requestreply_broker_device">
 			<MSBuild Projects="guide\requestreply_broker_device.dproj"/>
 		</Target>
 		<Target Name="requestreply_broker_device:Clean">
-			<MSBuild Projects="guide\requestreply_broker_device.dproj" Targets="Clean"/>
+			<MSBuild Targets="Clean" Projects="guide\requestreply_broker_device.dproj"/>
 		</Target>
 		<Target Name="requestreply_broker_device:Make">
-			<MSBuild Projects="guide\requestreply_broker_device.dproj" Targets="Make"/>
+			<MSBuild Targets="Make" Projects="guide\requestreply_broker_device.dproj"/>
 		</Target>
 		<Target Name="multithreaded_srv">
 			<MSBuild Projects="guide\multithreaded_srv.dproj"/>
 		</Target>
 		<Target Name="multithreaded_srv:Clean">
-			<MSBuild Projects="guide\multithreaded_srv.dproj" Targets="Clean"/>
+			<MSBuild Targets="Clean" Projects="guide\multithreaded_srv.dproj"/>
 		</Target>
 		<Target Name="multithreaded_srv:Make">
-			<MSBuild Projects="guide\multithreaded_srv.dproj" Targets="Make"/>
+			<MSBuild Targets="Make" Projects="guide\multithreaded_srv.dproj"/>
 		</Target>
 		<Target Name="multithreaded_relay">
 			<MSBuild Projects="guide\multithreaded_relay.dproj"/>
 		</Target>
 		<Target Name="multithreaded_relay:Clean">
-			<MSBuild Projects="guide\multithreaded_relay.dproj" Targets="Clean"/>
+			<MSBuild Targets="Clean" Projects="guide\multithreaded_relay.dproj"/>
 		</Target>
 		<Target Name="multithreaded_relay:Make">
-			<MSBuild Projects="guide\multithreaded_relay.dproj" Targets="Make"/>
+			<MSBuild Targets="Make" Projects="guide\multithreaded_relay.dproj"/>
 		</Target>
 		<Target Name="Build">
-			<CallTarget Targets="hello_srv;hello_srv_with_ctrl_c;hello_cli;weather_srv;weather_cli;weather_proxy;task_ventilator;task_worker;task_sink;multisocket_reader;multisocket_poller;json_time_srv;json_time_cli;requestreply_cli;requestreply_srv;requestreply_broker;requestreply_broker_device;multithreaded_srv;multithreaded_relay"/>
+			<CallTarget Targets="hello_srv;hello_srv_with_ctrl_c;hello_cli;weather_srv;weather_cli;weather_proxy;task_ventilator;task_worker;task_sink;multisocket_reader;multisocket_poller;requestreply_cli;requestreply_srv;requestreply_broker;requestreply_broker_device;multithreaded_srv;multithreaded_relay"/>
 		</Target>
 		<Target Name="Clean">
-			<CallTarget Targets="hello_srv:Clean;hello_srv_with_ctrl_c:Clean;hello_cli:Clean;weather_srv:Clean;weather_cli:Clean;weather_proxy:Clean;task_ventilator:Clean;task_worker:Clean;task_sink:Clean;multisocket_reader:Clean;multisocket_poller:Clean;json_time_srv:Clean;json_time_cli:Clean;requestreply_cli:Clean;requestreply_srv:Clean;requestreply_broker:Clean;requestreply_broker_device:Clean;multithreaded_srv:Clean;multithreaded_relay:Clean"/>
+			<CallTarget Targets="hello_srv:Clean;hello_srv_with_ctrl_c:Clean;hello_cli:Clean;weather_srv:Clean;weather_cli:Clean;weather_proxy:Clean;task_ventilator:Clean;task_worker:Clean;task_sink:Clean;multisocket_reader:Clean;multisocket_poller:Clean;requestreply_cli:Clean;requestreply_srv:Clean;requestreply_broker:Clean;requestreply_broker_device:Clean;multithreaded_srv:Clean;multithreaded_relay:Clean"/>
 		</Target>
 		<Target Name="Make">
-			<CallTarget Targets="hello_srv:Make;hello_srv_with_ctrl_c:Make;hello_cli:Make;weather_srv:Make;weather_cli:Make;weather_proxy:Make;task_ventilator:Make;task_worker:Make;task_sink:Make;multisocket_reader:Make;multisocket_poller:Make;json_time_srv:Make;json_time_cli:Make;requestreply_cli:Make;requestreply_srv:Make;requestreply_broker:Make;requestreply_broker_device:Make;multithreaded_srv:Make;multithreaded_relay:Make"/>
+			<CallTarget Targets="hello_srv:Make;hello_srv_with_ctrl_c:Make;hello_cli:Make;weather_srv:Make;weather_cli:Make;weather_proxy:Make;task_ventilator:Make;task_worker:Make;task_sink:Make;multisocket_reader:Make;multisocket_poller:Make;requestreply_cli:Make;requestreply_srv:Make;requestreply_broker:Make;requestreply_broker_device:Make;multithreaded_srv:Make;multithreaded_relay:Make"/>
 		</Target>
-		<Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+		<Import Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')" Project="$(BDS)\Bin\CodeGear.Group.Targets"/>
 	</Project>

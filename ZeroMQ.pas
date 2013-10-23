@@ -8,7 +8,7 @@ unit ZeroMQ;
 interface
 
 uses
-  Generics.Collections,
+  System.Classes, System.Generics.Collections,
   ZeroMQ.API;
 
 type
@@ -22,11 +22,23 @@ type
     Stream
   );
 
+  ZMQEvent = (
+    Connected, Delayed, Retried,
+    Listening, BindFailed,
+    Accepted, AcceptFailed,
+    Closed, CloseFailed, Disconnected, MonitorStopped
+  );
+  ZMQEvents = set of ZMQEvent;
+
+  TZMQEventProc = reference to procedure(Event: ZMQEvents; Value: Integer; const Address: string);
+
   MessageFlag = (DontWait, SendMore);
   MessageFlags = set of MessageFlag;
 
   IZMQPair = interface
   ['{7F6D7BE5-7182-4972-96E1-4B5798608DDE}']
+    { When manually closing the socket is needed }
+    procedure Close;
     { Server pair }
     function Bind(const Address: string): Integer;
     { Client pair }
@@ -68,6 +80,8 @@ type
     function Poller: IZMQPoll;
     function InitMessage(var Msg: TZmqMsg; Size: Integer = 0): Integer;
     function CloseMessage(var Msg: TZmqMsg): Integer;
+    function Monitor(Socket: IZMQPair; const Name: string; Events: ZMQEvents; const OnEvent: TZMQEventProc): Boolean;
+    procedure Sleep(Seconds: Integer);
   end;
 
   TZeroMQ = class(TInterfacedObject, IZeroMQ)
@@ -82,7 +96,12 @@ type
     function Poller: IZMQPoll;
     function InitMessage(var Msg: TZmqMsg; Size: Integer = 0): Integer;
     function CloseMessage(var Msg: TZmqMsg): Integer;
+    function Monitor(Socket: IZMQPair; const Name: string; Events: ZMQEvents; const OnEvent: TZMQEventProc): Boolean;
+    procedure Sleep(Seconds: Integer);
   end;
+
+const
+  ZMQAllEvents = [Connected..MonitorStopped];
 
 implementation
 
@@ -90,9 +109,12 @@ type
   TZMQPair = class(TInterfacedObject, IZMQPair)
   private
     FSocket: Pointer;
+    FContext: TZeroMQ;
   public
-    constructor Create(Socket: Pointer);
+    constructor Create(Context: TZeroMQ; Socket: Pointer);
     destructor Destroy; override;
+    { When manually closing the socket is needed }
+    procedure Close;
     { Server pair }
     function Bind(const Address: string): Integer;
     { Client pair }
@@ -142,9 +164,14 @@ begin
   inherited;
 end;
 
+procedure TZeroMQ.Sleep(Seconds: Integer);
+begin
+  zmq_sleep(Seconds);
+end;
+
 function TZeroMQ.Start(Kind: ZMQSocket): IZMQPair;
 begin
-  Result := TZMQPair.Create(zmq_socket(FContext, Ord(Kind)));
+  Result := TZMQPair.Create(Self, zmq_socket(FContext, Ord(Kind)));
   FPairs.Add(Result);
 end;
 
@@ -174,18 +201,93 @@ begin
   Result := zmq_msg_close(@Msg);
 end;
 
+function TZeroMQ.Monitor(Socket: IZMQPair; const Name: string; Events: ZMQEvents;
+  const OnEvent: TZMQEventProc): Boolean;
+var
+  MonitorAddress: string;
+  rc: Integer;
+begin
+  MonitorAddress := 'inproc://' + Name;
+
+  rc := zmq_socket_monitor((Socket as TZMQPair).FSocket, PAnsiChar(AnsiString(MonitorAddress)), Word(Events));
+  if rc = 0 then
+  begin
+    TThread.CreateAnonymousThread(
+      procedure
+
+        function ReadMonitorMessage(P: IZMQPair; var Event: TZmqEventData; var EP: RawByteString): Boolean;
+        var
+          m1, m2: TZmqMsg;
+          rc: Integer;
+          data: PZmqEventData;
+        begin
+          { binary part }
+          InitMessage(m1);
+          rc := P.ReceiveMessage(m1, []);
+          if (rc = -1) and (zmq_errno = ETERM) then
+            Exit(False);
+          Assert(rc <> -1);
+          Assert(zmq_msg_more(@m1) <> 0);
+
+          { address part }
+          InitMessage(m2);
+          rc := P.ReceiveMessage(m2, []);
+          if (rc = -1) and (zmq_errno = ETERM) then
+            Exit(False);
+          Assert(rc <> -1);
+          Assert(zmq_msg_more(@m2) = 0);
+
+          { copy binary data to event struct }
+          data := PZmqEventData(zmq_msg_data(@m1));
+          Event := data^;
+
+          { copy address part }
+          SetString(EP, PAnsiChar(zmq_msg_data(@m2)), zmq_msg_size(@m2));
+
+          zmq_msg_close(@m2);
+          zmq_msg_close(@m1);
+
+          Result := True;
+        end;
+
+      var
+        event: TZmqEventData;
+        addr: RawByteString;
+        P: IZMQPair;
+      begin
+        P := Start(ZMQSocket.Pair);
+        P.Connect(MonitorAddress);
+        while ReadMonitorMessage(P, event, addr) do
+          OnEvent(ZMQEvents(event.event), event.value, string(addr));
+      end
+    ).Start;
+    Result := True;
+  end
+  else
+    Result := False;
+end;
+
 { TZMQPair }
 
-constructor TZMQPair.Create(Socket: Pointer);
+constructor TZMQPair.Create(Context: TZeroMQ; Socket: Pointer);
 begin
   inherited Create;
+  FContext := Context;
   FSocket := Socket;
 end;
 
 destructor TZMQPair.Destroy;
 begin
-  zmq_close(FSocket);
+  if FSocket <> nil then
+    zmq_close(FSocket);
   inherited;
+end;
+
+procedure TZMQPair.Close;
+begin
+  FContext.FPairs.Remove(Self);
+  zmq_close(FSocket);
+  FSocket := nil;
 end;
 
 function TZMQPair.Bind(const Address: string): Integer;

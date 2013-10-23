@@ -1,0 +1,60 @@
+﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+		<PropertyGroup>
+			<ProjectGuid>{408F600D-EF35-4519-A99A-17A93AA36953}</ProjectGuid>
+		</PropertyGroup>
+		<ItemGroup>
+			<Projects Include="demo\json_time_srv.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="demo\json_time_cli.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="demo\monitor_socket.dproj">
+				<Dependencies/>
+			</Projects>
+		</ItemGroup>
+		<ProjectExtensions>
+			<Borland.Personality>Default.Personality.12</Borland.Personality>
+			<Borland.ProjectType/>
+			<BorlandProject>
+				<Default.Personality/>
+			</BorlandProject>
+		</ProjectExtensions>
+		<Target Name="json_time_srv">
+			<MSBuild Projects="demo\json_time_srv.dproj"/>
+		</Target>
+		<Target Name="json_time_srv:Clean">
+			<MSBuild Targets="Clean" Projects="demo\json_time_srv.dproj"/>
+		</Target>
+		<Target Name="json_time_srv:Make">
+			<MSBuild Targets="Make" Projects="demo\json_time_srv.dproj"/>
+		</Target>
+		<Target Name="json_time_cli">
+			<MSBuild Projects="demo\json_time_cli.dproj"/>
+		</Target>
+		<Target Name="json_time_cli:Clean">
+			<MSBuild Targets="Clean" Projects="demo\json_time_cli.dproj"/>
+		</Target>
+		<Target Name="json_time_cli:Make">
+			<MSBuild Targets="Make" Projects="demo\json_time_cli.dproj"/>
+		</Target>
+		<Target Name="monitor_socket">
+			<MSBuild Projects="demo\monitor_socket.dproj"/>
+		</Target>
+		<Target Name="monitor_socket:Clean">
+			<MSBuild Targets="Clean" Projects="demo\monitor_socket.dproj"/>
+		</Target>
+		<Target Name="monitor_socket:Make">
+			<MSBuild Targets="Make" Projects="demo\monitor_socket.dproj"/>
+		</Target>
+		<Target Name="Build">
+			<CallTarget Targets="json_time_srv;json_time_cli;monitor_socket"/>
+		</Target>
+		<Target Name="Clean">
+			<CallTarget Targets="json_time_srv:Clean;json_time_cli:Clean;monitor_socket:Clean"/>
+		</Target>
+		<Target Name="Make">
+			<CallTarget Targets="json_time_srv:Make;json_time_cli:Make;monitor_socket:Make"/>
+		</Target>
+		<Import Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')" Project="$(BDS)\Bin\CodeGear.Group.Targets"/>
+	</Project>
