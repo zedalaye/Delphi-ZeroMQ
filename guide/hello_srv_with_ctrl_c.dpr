@@ -5,6 +5,7 @@ program hello_srv_with_ctrl_c;
 {$R *.res}
 
 uses
+  madExcept,
   Winapi.Windows, System.SysUtils, ZeroMQ;
 
 var

@@ -5,6 +5,7 @@ program json_time_srv;
 {$R *.res}
 
 uses
+  madExcept,
   Winapi.Windows, System.SysUtils, ZeroMQ, SuperObject;
 
 var

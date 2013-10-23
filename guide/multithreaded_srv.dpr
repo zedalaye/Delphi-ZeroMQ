@@ -5,6 +5,7 @@ program multithreaded_srv;
 {$R *.res}
 
 uses
+  madExcept,
   System.SysUtils, System.Classes, ZeroMQ;
 
 type
@@ -59,7 +60,7 @@ begin
   for ThreadsCount := 0 to 5 - 1 do
     TWorkerThread.Create(Z);
 
-  Z.StartDevice(ZMQDevice.Queue, Clients, Workers);
+  Z.StartProxy(Clients, Workers);
 end;
 
 begin

@@ -5,6 +5,7 @@ program requestreply_broker;
 {$R *.res}
 
 uses
+  madExcept,
   System.SysUtils, ZeroMQ;
 
 procedure Run;

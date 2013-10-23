@@ -5,6 +5,7 @@ program task_sink;
 {$R *.res}
 
 uses
+  madExcept,
   Winapi.Windows, System.SysUtils, ZeroMQ;
 
 procedure Run;

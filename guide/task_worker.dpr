@@ -5,6 +5,7 @@ program task_worker;
 {$R *.res}
 
 uses
+  madExcept,
   System.SysUtils, ZeroMQ;
 
 procedure Run;

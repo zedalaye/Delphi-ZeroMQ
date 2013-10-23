@@ -5,6 +5,7 @@ program multithreaded_relay;
 {$R *.res}
 
 uses
+  madExcept,
   System.SysUtils, System.Classes, ZeroMQ;
 
 type

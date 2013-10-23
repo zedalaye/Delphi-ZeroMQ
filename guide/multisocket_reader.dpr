@@ -5,6 +5,7 @@ program multisocket_reader;
 {$R *.res}
 
 uses
+  madExcept,
   System.SysUtils, ZeroMQ.API, ZeroMQ;
 
 procedure Run;

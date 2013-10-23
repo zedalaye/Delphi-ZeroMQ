@@ -5,6 +5,7 @@ program hello_cli;
 {$R *.res}
 
 uses
+  madExcept,
   System.SysUtils, ZeroMQ;
 
 procedure Run;

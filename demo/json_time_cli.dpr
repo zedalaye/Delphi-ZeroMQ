@@ -5,6 +5,7 @@ program json_time_cli;
 {$R *.res}
 
 uses
+  madExcept,
   Winapi.Windows, System.SysUtils, ZeroMQ, SuperObject;
 
 procedure Run;

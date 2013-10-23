@@ -5,6 +5,7 @@ program multisocket_poller;
 {$R *.res}
 
 uses
+  madExcept,
   System.SysUtils, ZeroMQ;
 
 procedure Run;

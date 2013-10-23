@@ -5,6 +5,7 @@ program task_ventilator;
 {$R *.res}
 
 uses
+  madExcept,
   System.SysUtils, ZeroMQ;
 
 procedure Run;

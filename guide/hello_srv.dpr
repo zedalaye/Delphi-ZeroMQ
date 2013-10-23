@@ -5,7 +5,8 @@ program hello_srv;
 {$R *.res}
 
 uses
-  System.SysUtils, ZeroMQ, Crossroads.IO;
+  madExcept,
+  System.SysUtils, ZeroMQ;
 
 procedure Run;
 var

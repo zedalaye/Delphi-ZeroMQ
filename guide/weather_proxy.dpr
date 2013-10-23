@@ -5,6 +5,7 @@ program weather_proxy;
 {$R *.res}
 
 uses
+  madExcept,
   System.SysUtils, ZeroMQ;
 
 procedure Run;
