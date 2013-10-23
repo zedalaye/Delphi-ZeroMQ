@@ -60,15 +60,10 @@ type
     procedure FireEvents;
   end;
 
-  ZMQDevice = (
-    Queue, Forwarder, Streamer
-  );
-
   IZeroMQ = interface
     ['{593FC079-23AD-451E-8877-11584E93D80E}']
     function Start(Kind: ZMQSocket): IZMQPair;
-    function StartDevice(Kind: ZMQDevice; Frontend, Backend: IZMQPair): Integer;
-    procedure PollEmulatedDevice(Kind: ZMQDevice; Frontend, Backend: IZMQPair);
+    function StartProxy(Frontend, Backend: IZMQPair; Capture: IZMQPair = nil): Integer;
     function Poller: IZMQPoll;
     function InitMessage(var Msg: TZmqMsg; Size: Integer = 0): Integer;
     function CloseMessage(var Msg: TZmqMsg): Integer;
@@ -79,11 +74,10 @@ type
     FContext: Pointer;
     FPairs: TList<IZMQPair>;
   public
-    constructor Create(IoThreads: Integer = 1);
+    constructor Create;
     destructor Destroy; override;
     function Start(Kind: ZMQSocket): IZMQPair;
-    function StartDevice(Kind: ZMQDevice; Frontend, Backend: IZMQPair): Integer;
-    procedure PollEmulatedDevice(Kind: ZMQDevice; Frontend, Backend: IZMQPair);
+    function StartProxy(Frontend, Backend: IZMQPair; Capture: IZMQPair = nil): Integer;
     function Poller: IZMQPoll;
     function InitMessage(var Msg: TZmqMsg; Size: Integer = 0): Integer;
     function CloseMessage(var Msg: TZmqMsg): Integer;
@@ -133,17 +127,17 @@ type
 
 { TZeroMQ }
 
-constructor TZeroMQ.Create(IoThreads: Integer);
+constructor TZeroMQ.Create;
 begin
   inherited Create;
   FPairs := TList<IZMQPair>.Create;
-  FContext := zmq_init(IoThreads);
+  FContext := zmq_ctx_new;
 end;
 
 destructor TZeroMQ.Destroy;
 begin
   FPairs.Free;
-  zmq_term(FContext);
+  zmq_ctx_term(FContext);
   inherited;
 end;
 
@@ -153,51 +147,12 @@ begin
   FPairs.Add(Result);
 end;
 
-function TZeroMQ.StartDevice(Kind: ZMQDevice; Frontend,
-  Backend: IZMQPair): Integer;
+function TZeroMQ.StartProxy(Frontend, Backend, Capture: IZMQPair): Integer;
 begin
-  Result := zmq_device(Ord(Kind) + 1, (Frontend as TZMQPair).FSocket, (Backend as TZMQPair).FSocket);
-end;
-
-procedure TZeroMQ.PollEmulatedDevice(Kind: ZMQDevice; Frontend,
-  Backend: IZMQPair);
-const
-  R_OR_D = [ZMQSocket.Router, ZMQSocket.Dealer];
-  P_OR_S = [ZMQSocket.Publisher, ZMQSocket.Subscriber];
-  P_OR_P = [ZMQSocket.Push, ZMQSocket.Pull];
-var
-  P: IZMQPoll;
-  FST, BST: ZMQSocket;
-begin
-  FST := Frontend.SocketType;
-  BST := Backend.SocketType;
-  if   ((Kind = ZMQDevice.Queue)     and (FST <> BST) and (FST in R_OR_D) and (BST in R_OR_D))
-    or ((Kind = ZMQDevice.Forwarder) and (FST <> BST) and (FST in P_OR_S) and (BST in P_OR_S))
-    or ((Kind = ZMQDevice.Streamer)  and (FST <> BST) and (FST in P_OR_P) and (BST in P_OR_P))
-  then
-  begin
-    P := Poller;
-
-    P.RegisterPair(Frontend, [PollEvent.PollIn],
-      procedure(Event: PollEvents)
-      begin
-        if PollEvent.PollIn in Event then
-          Frontend.ForwardMessage(Backend);
-      end
-    );
-
-    P.RegisterPair(Backend, [PollEvent.PollIn],
-      procedure(Event: PollEvents)
-      begin
-        if PollEvent.PollIn in Event then
-          Backend.ForwardMessage(Frontend);
-      end
-    );
-
-    while True do
-      if P.PollOnce > 0 then
-        P.FireEvents;
-  end;
+  if Capture = nil then
+    Result := zmq_proxy((Frontend as TZMQPair).FSocket, (Backend as TZMQPair).FSocket, nil)
+  else
+    Result := zmq_proxy((Frontend as TZMQPair).FSocket, (Backend as TZMQPair).FSocket, (Capture as TZMQPair).FSocket)
 end;
 
 function TZeroMQ.InitMessage(var Msg: TZmqMsg; Size: Integer): Integer;
