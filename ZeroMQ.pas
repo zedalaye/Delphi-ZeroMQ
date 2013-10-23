@@ -1,6 +1,6 @@
 (*
     Unit owner :
-       Pierr Yager <pierre.y@gmail.com>
+       Pierre Yager <pierre.y@gmail.com>
 *)
 
 unit ZeroMQ;
@@ -18,7 +18,8 @@ type
     Requester, Responder,
     Dealer, Router,
     Pull, Push,
-    XPublisher, XSubscriber
+    XPublisher, XSubscriber,
+    Stream
   );
 
   MessageFlag = (DontWait, SendMore);

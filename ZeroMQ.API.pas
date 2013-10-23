@@ -26,7 +26,7 @@
 
     Unit owners :
        Henri Gourvest <hgourvest@gmail.com>
-       Pierr Yager <pierre.y@gmail.com>
+       Pierre Yager <pierre.y@gmail.com>
 *)
 
 unit ZeroMQ.API;
@@ -57,7 +57,7 @@ const
     ZMQ_VERSION_PATCH;
 
 (*  Run-time API version detection                                            *)
-procedure zmq_version (major, minor, patch: PInteger); cdecl; external LIBZEROMQ;
+procedure zmq_version(major, minor, patch: PInteger); cdecl; external LIBZEROMQ;
 
 (******************************************************************************)
 (*  0MQ errors.                                                               *)
@@ -124,7 +124,7 @@ function zmq_ctx_get(context: Pointer; option: Integer): Integer; cdecl; externa
 
 (*  Old (legacy) API                                                          *)
 function zmq_init(io_threads: Integer): Pointer; cdecl; external LIBZEROMQ; deprecated;
-function zmq_term (context: Pointer): Integer; cdecl; external LIBZEROMQ; deprecated;
+function zmq_term(context: Pointer): Integer; cdecl; external LIBZEROMQ; deprecated;
 function zmq_ctx_destroy(context: Pointer): Integer; cdecl; external LIBZEROMQ; deprecated;
 
 (******************************************************************************)
@@ -303,7 +303,7 @@ function zmq_disconnect(s: Pointer; const addr: PAnsiChar): Integer; cdecl; exte
 function zmq_send(s: Pointer; const buf: Pointer; len: NativeUInt; flags: Integer): Integer; cdecl; external LIBZEROMQ;
 function zmq_send_const (s: Pointer; const buf: Pointer; len: NativeUInt; flags: Integer): Integer; cdecl; external LIBZEROMQ;
 function zmq_recv(s, buf: Pointer; len: NativeUInt; flags: Integer): Integer; cdecl; external LIBZEROMQ;
-function zmq_socket_monitor (s: Pointer; const addr: PAnsiChar; events: Integer): Integer; cdecl; external LIBZEROMQ;
+function zmq_socket_monitor(s: Pointer; const addr: PAnsiChar; events: Integer): Integer; cdecl; external LIBZEROMQ;
 
 function zmq_sendmsg(s: Pointer; msg: PZmqMsg; flags: Integer): Integer; cdecl; external LIBZEROMQ;
 function zmq_recvmsg(s: Pointer; msg: PZmqMsg; flags: Integer): Integer; cdecl; external LIBZEROMQ;
@@ -350,11 +350,11 @@ function zmq_z85_encode(dest: PAnsiChar; data: PByte; size: NativeUInt): PAnsiCh
 
 (*  Encode a binary key from printable text per ZMQ RFC 32  *)
 (* Decode data with Z85 encoding. Returns decoded data                        *)
-function zmq_z85_decode (dest: PByte; str: PAnsiChar): PByte; cdecl; external LIBZEROMQ;
+function zmq_z85_decode(dest: PByte; str: PAnsiChar): PByte; cdecl; external LIBZEROMQ;
 
 (* Generate z85-encoded public and private keypair with libsodium.            *)
 (* Returns 0 on success.                                                      *)
-function zmq_curve_keypair (z85_public_key, z85_secret_key: PAnsiChar): Integer; cdecl; external LIBZEROMQ;
+function zmq_curve_keypair(z85_public_key, z85_secret_key: PAnsiChar): Integer; cdecl; external LIBZEROMQ;
 
 (*  Deprecated aliases *)
 const
